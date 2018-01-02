@@ -1,0 +1,35 @@
+@charset "UTF-8";
+@import "../../style/var.scss";
+.index{
+  width:100%;
+  height:100%;
+  header{
+    width:100%;
+    height:56px;
+    background:$mainBtn;
+    position:absolute;
+    box-shadow: 0 4px 0 $mainBtn;
+    z-index:1000;
+  }
+    section{
+      position:absolute;
+      width:100%;
+      top:60px;
+      overflow:auto;
+      bottom:0px;
+      aside{
+        width:240px;
+        height:100%;
+        background:#000;
+        position:absolute;
+      }
+      article{
+        height:100%;
+        background:#fff;
+        position:absolute;
+        left:240px;
+        right:0px;
+      }
+    }
+
+}

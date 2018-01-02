@@ -1,0 +1,11 @@
+export const GET_PRODUCT_LIST = 'GET_PRODUCT_LIST';
+export const GET_PRODUCT_DETAIL = 'GET_PRODUCT_DETAIL';
+
+export const SET_REGIST_STATE = 'SET_REGIST_STATE';
+
+export const SET_USERINFO = 'SET_USERINFO';
+
+
+
+
+
