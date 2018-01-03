@@ -17,13 +17,18 @@
     .ant-menu-dark ,.ant-menu-item, .ant-menu-item-group-title > a {
         color:#fff;
     }
-   .ant-menu-item:hover, .ant-menu-item-group-title:hover {
-        color:#fff;
 
-    }
     .ant-menu-submenu-open,.ant-menu-item:hover,.ant-menu-submenu-title:hover,.ant-menu-submenu-active:hover {
         color:$mainBtn;
     }
+
+  .ant-menu-item-group-title:hover ,.ant-menu-item-selected:hover{
+    color:#fff;
+  }
+
+  .ant-menu.ant-menu-dark .ant-menu-item-selected, .ant-menu-submenu-popup.ant-menu-dark .ant-menu-item-selected {
+    background-color: $mainBtn;
+  }
 
 
     .ant-menu-submenu-title{

@@ -23,6 +23,7 @@
     "babel-preset-stage-0": "~6.3.13",
     "bundle-loader": "^0.5.4",
     "compass": "^0.1.1",
+    "copy-webpack-plugin": "^4.3.1",
     "css-loader": "^0.25.0",
     "extract-text-webpack-plugin": "^1.0.1",
     "html-webpack-plugin": "^2.9.0",

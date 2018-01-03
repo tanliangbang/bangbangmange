@@ -11,8 +11,8 @@ module.exports = {
     ],
     //入口文件输出配置
     output: {
-        'path': path.join(__dirname, 'projectAdmin'),
-        'publicPath': '/projectAdmin',// 网站运行时的访问路径
+        'path': path.join(__dirname, './'),
+        //'publicPath': '',// 网站运行时的访问路径
         'filename': 'js/index.js'
     },
     resolve: {

@@ -2,6 +2,10 @@ import React, { Component, PropTypes } from 'react'
 
 import { Layout, Menu, Breadcrumb, Icon } from 'antd';
 import { Link } from 'react-router';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import * as resAction from '../../actions/res';
+
 const { Header, Content, Footer, Sider } = Layout;
 const SubMenu = Menu.SubMenu;
 
@@ -9,7 +13,9 @@ export class leftMenu extends Component {
 
     constructor(props) {
         super(props);
+        this.props.actions.getResList();
     }
+
 
     render() {
         return (
@@ -32,4 +38,13 @@ export class leftMenu extends Component {
     }
 }
 
-export default  leftMenu;
+
+export default  connect((state)=>{
+    return {
+    }
+}, (dispatch)=>{
+    const allAction =Object.assign(resAction);
+    return {
+        actions: bindActionCreators(allAction, dispatch)
+    }
+})(leftMenu);

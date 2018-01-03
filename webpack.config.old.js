@@ -10,14 +10,14 @@ module.exports = {
 　　//iFrame：该模式下修改代码后会自动打包，但是浏览器不会自动刷新
 　　//inline：内联模式，该模式下修改代码后，webpack将自动打包并且刷新浏览器，让我们看到最终的修改
     devServer: {
-        contentBase:'./projectAdmin',
+        contentBase:'./dev',
         historyApiFallback: true,
         hot: true,
         inline: true,
         progress: true,
         proxy: {
             '/api': {
-                target: 'http://120.27.164.119:8980',
+                target: 'http://118.89.161.150',
                 secure: false
             }
         }
@@ -29,8 +29,8 @@ module.exports = {
     },
     //入口文件输出配置
     output: {
-        path: path.join(__dirname, 'build'),//'build',
-        //publicPath: "build/",// 网站运行时的访问路径
+        path: path.join(__dirname, '/dev'),//'build',
+        //publicPath: "",// 网站运行时的访问路径
         filename: '/js/[name].js'
     },
     resolve: { 

@@ -1,12 +1,12 @@
 import { combineReducers } from 'redux'
 import { routerReducer } from 'react-router-redux'
 import { reducer as formReducer } from 'redux-form'
-import product from './product'
+import res from './res'
 //todos
 
 //使用redux的combineReducers方法将所有reducer打包起来
 const rootReducer = combineReducers({
-	product,
+	res,
 	form: formReducer,
 	routing: routerReducer //整合路由
 })

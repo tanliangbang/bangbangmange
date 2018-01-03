@@ -4,6 +4,7 @@ var path = require('path');
 var HtmlwebpackPlugin = require('html-webpack-plugin');
 var JSXPath = './dev';
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
+var CopyWebpackPlugin = require("copy-webpack-plugin");
 
 module.exports = {
     //页面入口文件配置 
@@ -13,7 +14,7 @@ module.exports = {
     },
     //入口文件输出配置
     output: {
-        path: path.join(__dirname, 'projectAdmin'),//'build',
+        path: path.join(__dirname, 'bangbangmanage'),//'build',
         filename: '/js/[hash:8].[name].js'
     },
     resolve: { 
@@ -51,6 +52,10 @@ module.exports = {
         }),//添加我们的插件 会自动生成一个html文件
         new webpack.BannerPlugin('BBD'),
         new ExtractTextPlugin("/css/[hash:8].styles.css"),
+        new CopyWebpackPlugin([{
+            from: __dirname + '/dev/public',
+            to:__dirname + '/bangbangmanage/public'
+        }]),
         new webpack.DefinePlugin({ //压缩 React
           "process.env": {
             NODE_ENV: JSON.stringify("production") //development,production
