@@ -1,6 +1,8 @@
 @charset "UTF-8";
 @import "../style/var.scss";
 @import "./reset";
+@import "./theme";
+
 /* -------------CSS 格式化------------ */
 body{
     overflow-x:hidden;
@@ -9,9 +11,7 @@ body{
     height:100%;
     padding:0px;
     margin:0px;
-    li{
-        list-style-type: none;
-    }
+    background: #f2f1ef;
 }
 .container,.app{
     width:100%;

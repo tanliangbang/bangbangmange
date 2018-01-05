@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Table, Icon, Divider } from 'antd';
 
-export class ResList extends Component {
+export class ResContentList extends Component {
     constructor(props) {
         super(props);
         this.columns = [{
@@ -57,9 +57,7 @@ export class ResList extends Component {
     render() {
         return (
             <div className="resList">
-                <Table columns={this.columns}
-                       dataSource={this.state.dataSource}
-                       scroll ={{ x: true, y: true }}/>
+                <Table dataSource={this.state.dataSource} columns={this.columns} scroll={{x:false,y:true}}/>
             </div>
         );
     }
@@ -75,4 +73,4 @@ export default  connect((state)=>{
     return {
         actions: bindActionCreators(allAction)
     }
-})(ResList);
+})(ResContentList);

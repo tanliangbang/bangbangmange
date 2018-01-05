@@ -18,19 +18,29 @@ export class leftMenu extends Component {
 
 
     render() {
+        const{res} = this.props
+        if(res.length<=0){
+            return<div></div>;
+        }
         return (
                <div className="leftMenu">
                         <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" >
                             <SubMenu key="sub1" title={<span><Icon type="database" /><span>资源管理</span></span>}>
                                 <SubMenu key="sub2" title={<span>资源列表</span>}>
-                                    <Menu.Item key="2">前端资源</Menu.Item>
-                                    <Menu.Item key="3">后端资源</Menu.Item>
+                                    {
+                                        res.map((item, k) => {
+                                            return (
+                                                <Menu.Item key={k}> <Link  to={{ pathname: '/resContentList', query: { type: item.name,id:item.id } }}>{item.cname}</Link></Menu.Item>
+                                            )
+                                        })
+                                    }
+
                                 </SubMenu>
-                                <Menu.Item key="4">添加资源</Menu.Item>
+                                <Menu.Item key={res.length+1}>添加资源</Menu.Item>
                             </SubMenu>
                             <SubMenu key="sub3" title={<span><Icon type="profile"  /><span>文章管理</span></span>}>
-                                <Menu.Item key="5">文章列表</Menu.Item>
-                                <Menu.Item key="6">添加文章</Menu.Item>
+                                <Menu.Item key={res.length+2}>文章列表</Menu.Item>
+                                <Menu.Item key={res.length+3}>添加文章</Menu.Item>
                             </SubMenu>
                         </Menu>
                </div>
@@ -41,6 +51,7 @@ export class leftMenu extends Component {
 
 export default  connect((state)=>{
     return {
+        res:state.res.resList
     }
 }, (dispatch)=>{
     const allAction =Object.assign(resAction);

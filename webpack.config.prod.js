@@ -5,6 +5,7 @@ var HtmlwebpackPlugin = require('html-webpack-plugin');
 var JSXPath = './dev';
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var CopyWebpackPlugin = require("copy-webpack-plugin");
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 module.exports = {
     //页面入口文件配置 
@@ -60,6 +61,14 @@ module.exports = {
           "process.env": {
             NODE_ENV: JSON.stringify("production") //development,production
           }
-        })
+        }),
+        new CleanWebpackPlugin(
+            ['bangbangmanage/js/*.js','bangbangmanage/css/*.css',],　 //匹配删除的文件
+            {
+                root: __dirname,       　　　　　　　　　　//根目录
+                verbose:  true,        　　　　　　　　　　//开启在控制台输出信息
+                dry:      false        　　　　　　　　　　//启用删除文件
+            }
+        )
     ]
 };

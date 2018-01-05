@@ -5,7 +5,7 @@ import { Router, Route, IndexRoute} from 'react-router' // 路由
 import App from './containers/App';
 import Login from './containers/Login';
 import Index from './containers/Index';
-import ResList from './containers/Res/ResList';
+import ResContentList from './containers/Res/ResContentList';
 
 export const routes = {
 	path: '/',
@@ -14,8 +14,8 @@ export const routes = {
 	childRoutes: [{
 		component: Index,
 		childRoutes: [{
-			path: 'resList',
-			component: ResList,
+			path: 'ResContentList',
+			component: ResContentList,
 		}]
 	},{
 		path: 'login',
