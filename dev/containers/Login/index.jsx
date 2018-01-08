@@ -6,6 +6,7 @@ import { Checkbox , Icon, Input, Button } from 'antd';
 
 export class Login extends Component {
     constructor(props) {
+
         super(props);
     }
 
