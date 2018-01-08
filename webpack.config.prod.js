@@ -63,7 +63,7 @@ module.exports = {
           }
         }),
         new CleanWebpackPlugin(
-            ['bangbangmanage/js/*.js','bangbangmanage/css/*.css',],　 //匹配删除的文件
+            ['bangbangmanage/js/*.js','bangbangmanage/css/*.css'],　 //匹配删除的文件
             {
                 root: __dirname,       　　　　　　　　　　//根目录
                 verbose:  true,        　　　　　　　　　　//开启在控制台输出信息
