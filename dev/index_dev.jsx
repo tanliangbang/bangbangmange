@@ -1,6 +1,6 @@
 import './style/style.scss';
 import React from 'react'
-import { render } from 'react-dom'
+import ReactDOM from 'react-dom'
 import { createStore, applyMiddleware} from 'redux'
 import { Provider } from 'react-redux'
 import thunk from 'redux-thunk' //中间键，diapatch异步实现
@@ -34,7 +34,7 @@ const store = createStore(
 const history = syncHistoryWithStore(browserHistory, store)
 
 //路由
-render(
+ReactDOM.render(
 	<Provider store={store}>
 	  <div>
 	   <Routers history={history} />

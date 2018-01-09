@@ -7,6 +7,8 @@
 const API_BASE = '';
 
 module.exports = {
-    getResList: API_BASE + '/api/res/getResList'  //获取资源列表
+    getResListUrl: API_BASE + '/api/res/getResList',  //获取资源列表
+    getResContentListUrl:API_BASE + '/api/res/getResContentList',
+    getResDetailUrl:API_BASE + '/api/res/getRes'
 };
 

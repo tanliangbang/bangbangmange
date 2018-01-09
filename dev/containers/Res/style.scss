@@ -1,6 +1,24 @@
-.resList{
+@import "../../style/var.scss";
+
+.resContentList{
    padding:30px;
    table{
+      width:100%;
       height:100%;
+      text-align: left;
+      background:#fff;
+   }
+   .operaIcon{
+      a{
+         font-size:20px;
+         color:$mainBtn;
+      }
+   }
+   .fileImg{
+      img{
+         width: 100px;
+         height: 50px;
+         vertical-align: middle;
+      }
    }
 }
