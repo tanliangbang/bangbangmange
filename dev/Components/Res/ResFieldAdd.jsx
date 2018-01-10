@@ -25,43 +25,46 @@ export class ResFieldAdd extends React.Component {
 
 
 
-    handleOk(){
-        this.refs.commit.handleClick();
-    }
     handleCancel(){
-        console.log('Clicked cancel button');
         this.setState({
             visible: false,
         });
     }
 
     handleSubmit(e){
-        console.log("aaaaaa")
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
             if (!err) {
-                console.log('Received values of form: ', values);
+                if(values.isShow===undefined||values.isShow===true){
+                    values.isShow = 1;
+                }else{
+                    values.isShow = 0;
+                }
+                if(values.dataIsNeed===undefined||values.dataIsNeed===true){
+                    values.dataIsNeed = 1;
+                }else{
+                    values.dataIsNeed = 0;
+                }
+                this.props.addFieldFn(values)
+                this.props.form.resetFields();
+                this.handleCancel();
             }
         });
     }
     render() {
-
         const formItemLayout = {
             labelCol: { span: 6 },
             wrapperCol: { span: 16 }
         };
 
+
+
+
         const { getFieldDecorator } = this.props.form;
         const { visible, confirmLoading, ModalText } = this.state;
         return (
-            <Form ref="form" onSubmit={this.handleSubmit} className="resAddFieldForm">
-                <Modal title="添加字段"
-                       visible={visible}
-                       cancelText="取消"
-                       okText="添加"
-                       onOk={this.handleOk.bind(this)}
-                       confirmLoading={confirmLoading}
-                       onCancel={this.handleCancel.bind(this)}>
+                <Modal title="添加字段" visible={visible} onCancel={this.handleCancel.bind(this)} footer = {null}>
+                    <Form ref="form" onSubmit={this.handleSubmit.bind(this)} className="resAddFieldForm">
 
                     <FormItem {...formItemLayout} label="中文名称">
                         {getFieldDecorator('dataChinaName', {
@@ -103,17 +106,23 @@ export class ResFieldAdd extends React.Component {
                         )}
                     </FormItem>
                     <FormItem {...formItemLayout} label="是否必须">
-                            <Switch checkedChildren="是" unCheckedChildren="否" defaultChecked />
+                        {getFieldDecorator('dataIsNeed', {
+                        })(
+                            <Switch checkedChildren="是" unCheckedChildren="否" defaultChecked={true} />
+                        )}
                     </FormItem>
                     <FormItem {...formItemLayout} label="是否显示">
-                            <Switch checkedChildren="是" unCheckedChildren="否" defaultChecked />
+                        {getFieldDecorator('isShow', {
+                        })(
+                            <Switch checkedChildren="是" unCheckedChildren="否" defaultChecked={true} />
+                        )}
                     </FormItem>
-                    <FormItem>
-                        <Button type="primary" ref="commit" htmlType="submit" />
-                    </FormItem>
+                        <div className="text-center">
+                            <Button type="primary" ref="commit" htmlType="submit" >添 加</Button>
+                        </div>
+                    </Form>
 
                 </Modal>
-            </Form>
         );
     }
 }

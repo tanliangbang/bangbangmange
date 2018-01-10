@@ -13,11 +13,23 @@ const FormItem = Form.Item;
 export class ResAdd extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            dataSource:[]
+        }
     }
 
 
     showAddResField(){
            this.formRef.showModal();
+    }
+
+    addFieldFn(item){
+        let dataSource = this.state.dataSource;
+         item.key = dataSource.length;
+         dataSource.push(item);
+        this.setState({
+            dataSource:dataSource
+        })
     }
 
 
@@ -30,20 +42,7 @@ export class ResAdd extends React.Component {
             wrapperCol: { span: 8 }
         };
         const { getFieldDecorator } = this.props.form;
-
-
-        const dataSource = [{
-            key: '1',
-            name: '胡彦斌',
-            age: 32,
-            address: '西湖区湖底公园1号'
-        }, {
-            key: '2',
-            name: '胡彦祖',
-            age: 42,
-            address: '西湖区湖底公园1号'
-        }];
-
+        const {dataSource} = this.state;
         const columns = [{
             title: '中文名称',
             dataIndex: 'dataChinaName',
@@ -102,7 +101,7 @@ export class ResAdd extends React.Component {
                      <div className="common-title mgt-20">字段  <Icon onClick={this.showAddResField.bind(this)} className="add-field-btn" type="plus-square" /></div>
                     <Table dataSource={dataSource} columns={columns} pagination={false}/>
                 </div>
-                 <ResFieldAdd wrappedComponentRef={(inst) => this.formRef = inst} />
+                 <ResFieldAdd addFieldFn={this.addFieldFn.bind(this)} wrappedComponentRef={(inst) => this.formRef = inst} />
             </div>
         );
     }
