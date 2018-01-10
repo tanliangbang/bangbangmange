@@ -6,6 +6,7 @@ import App from './containers/App';
 import Login from './containers/Login';
 import Index from './containers/Index';
 import ResContentList from './containers/Res/ResContentList';
+import ResAdd from './containers/Res/ResAdd';
 
 export const routes = {
 	path: '/',
@@ -16,6 +17,9 @@ export const routes = {
 		childRoutes: [{
 			path: 'ResContentList',
 			component: ResContentList,
+		},{
+			path: 'resAdd',
+			component: ResAdd,
 		}]
 	},{
 		path: 'login',

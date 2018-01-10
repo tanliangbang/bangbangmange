@@ -19,7 +19,7 @@
     }
 
     .ant-menu-submenu-open,.ant-menu-item:hover,.ant-menu-submenu-title:hover,.ant-menu-submenu-active:hover {
-        color:$mainBtn;
+        color:$main-color;
     }
 
   .ant-menu-item-group-title:hover ,.ant-menu-item-selected:hover{
@@ -27,7 +27,7 @@
   }
 
   .ant-menu.ant-menu-dark .ant-menu-item-selected, .ant-menu-submenu-popup.ant-menu-dark .ant-menu-item-selected {
-    background-color: $mainBtn;
+    background-color: $main-color;
   }
 
 

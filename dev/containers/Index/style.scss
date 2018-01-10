@@ -6,9 +6,9 @@
   header{
     width:100%;
     height:56px;
-    background:$mainBtn;
+    background:$main-color;
     position:absolute;
-    box-shadow: 0 4px 0 $mainBtn;
+    box-shadow: 0 4px 0 $main-color;
     z-index:1000;
   }
     section{
@@ -21,7 +21,7 @@
         width:240px;
         height:100%;
         background:#000;
-        position:absolute;
+        position:fixed;
       }
       article{
         height:100%;

@@ -4,14 +4,75 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Table, Icon, Divider } from 'antd';
 import * as resAction from '../../actions/res';
+import { Tool } from '../../utils/Tool';
 
 export class ResContentList extends React.Component {
     constructor(props) {
         super(props);
+        var _this = this;
+        var type = this.props.router.query.type;
+        var pagination = {
+            total: 0,
+            defaultCurrent: 1,
+            pageSize: 5,
+            showSizeChanger: true,
+            onShowSizeChange: (current, pageSize) => {
+                _this.getDate(current, pageSize);
+                var pagination = this.state.pagination;
+                pagination.pageSize = pageSize;
+                _this.setState({
+                    pagination:pagination
+                })
+            },
+            onChange:(current, pageSize) => {
+                _this.getDate(current, pageSize)
+            },
+        }
+        this.state = {
+            loading:false,
+            pagination:pagination
+        }
+    }
+
+    componentWillReceiveProps(nextProps){
+        var currId = this.props.router.query.id;
+        var type = nextProps.router.query.type;
+        var id = nextProps.router.query.id;
+        if(currId!=nextProps.router.query.id){
+            this.getListData(type,id);
+        }
+    }
+
+    componentWillMount(){
         var type = this.props.router.query.type;
         var id = this.props.router.query.id;
-        this.props.actions.getResContentList(type);
-        this.props.actions.getResDetail(id);
+        this.getListData(type,id);
+    }
+
+    getDate(current, pageSize){
+        var type = this.props.router.query.type;
+        var _this = this;
+        _this.setState({loading:true})
+        new Promise(function(resolve,reject){
+            _this.props.actions.getResContentList(type,current, pageSize,resolve,reject);
+        }).then(function(){
+            _this.setState({loading:false})
+        })
+    }
+
+
+    getListData(type,id){
+        let _this = this;
+        _this.setState({loading:true})
+        let pResList =  new Promise(function(resolve,reject){
+            _this.props.actions.getResContentList(type,1,5,resolve,reject);
+        })
+        let pResDetail = new Promise(function(resolve,reject){
+            _this.props.actions.getResDetail(id,resolve,reject);
+        })
+        Promise.all([pResList, pResDetail]).then(values => {
+            _this.setState({loading:false})
+        });
     }
 
 
@@ -30,8 +91,8 @@ export class ResContentList extends React.Component {
              key: "modifiedTime"
          },{
              title: "是否上线",
-             dataIndex: "isOnline",
-             key: "isOnline"
+             dataIndex: "isOnLine",
+             key: "isOnLine"
          }, {
              title: '操作',
              key: 'option',
@@ -72,13 +133,22 @@ export class ResContentList extends React.Component {
     }
 
     dealResContentList(resContentList){
-         if(resContentList===null) return [];
+        if(resContentList===null) return [];
+        let pagination = this.state.pagination;
+        pagination.total = resContentList.pageTotal;
         var list = resContentList.content;
         var dataSource = [];
         var content = "";
         for(var i=0;i<list.length;i++){
              content = list[i].content;
-             content['key'] = i+2;
+             content['createTime'] = Tool.formatDate2(list[i].createTime,"-");
+             content['modifiedTime'] = Tool.formatDate2(list[i].modifiedTime,"-");
+            if(list[i].isOnLine==1){
+                content['isOnLine'] ="是"
+            }else{
+                content['isOnLine'] ="否"
+            }
+            content['key'] = i+2;
              dataSource.push(content)
         }
         return dataSource;
@@ -87,24 +157,16 @@ export class ResContentList extends React.Component {
 
 
     render() {
-        var columns = this.dealResDetail(this.props.resDetail);
-        var dataSource = this.dealResContentList(this.props.resContentList);
+        const {loading,pagination} = this.state;
+        const {resDetail,resContentList} = this.props;
+        let columns = this.dealResDetail(resDetail);
+        let dataSource = this.dealResContentList(resContentList);
+        let _this = this;
         if(columns.length<=0||dataSource.length<=0) return <div></div>;
-        let pagination = {
-            total: this.props.resContentList.pageTotal,
-            defaultCurrent: 1,
-            pageSize: 5,
-            showSizeChanger: true,
-            onShowSizeChange: (current, pageSize) => {
-                this.onClick(current, pageSize)
-            },
-            onChange:(current, pageSize) => {
-                this.onClick(current, pageSize)
-            },
-        }
         return (
             <div className="resContentList">
-                <Table dataSource={dataSource} columns={columns}   pagination={pagination}  />
+                <div className="common-title">{resDetail.cname+"("+resDetail.name+")列表"}</div>
+                <Table dataSource={dataSource} columns={columns} loading={loading}  pagination={pagination}  />
             </div>
         );
     }

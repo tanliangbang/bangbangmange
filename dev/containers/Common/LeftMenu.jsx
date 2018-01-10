@@ -14,6 +14,22 @@ export class leftMenu extends Component {
     constructor(props) {
         super(props);
         this.props.actions.getResList();
+        this.rootSubmenuKeys = ['sub1', 'sub3'];
+        this.state = {
+            openKeys: ['sub1'],
+        };
+    }
+
+
+    onOpenChange(openKeys) {
+        const latestOpenKey = openKeys.find(key => this.state.openKeys.indexOf(key) === -1);
+        if (this.rootSubmenuKeys.indexOf(latestOpenKey) === -1) {
+            this.setState({ openKeys });
+        } else {
+            this.setState({
+                openKeys: latestOpenKey ? [latestOpenKey] : [],
+            });
+        }
     }
 
 
@@ -24,7 +40,8 @@ export class leftMenu extends Component {
         }
         return (
                <div className="leftMenu">
-                        <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" >
+                        <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline"  openKeys={this.state.openKeys}
+                              onOpenChange={this.onOpenChange.bind(this)} >
                             <SubMenu key="sub1" title={<span><Icon type="database" /><span>资源管理</span></span>}>
                                 <SubMenu key="sub2" title={<span>资源列表</span>}>
                                     {
@@ -36,7 +53,7 @@ export class leftMenu extends Component {
                                     }
 
                                 </SubMenu>
-                                <Menu.Item key={res.length+1}>添加资源</Menu.Item>
+                                <Menu.Item key={res.length+1}><Link  to={{ pathname: '/resAdd'}}>添加资源</Link></Menu.Item>
                             </SubMenu>
                             <SubMenu key="sub3" title={<span><Icon type="profile"  /><span>文章管理</span></span>}>
                                 <Menu.Item key={res.length+2}>文章列表</Menu.Item>

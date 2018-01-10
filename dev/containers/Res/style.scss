@@ -7,11 +7,19 @@
       height:100%;
       text-align: left;
       background:#fff;
+      tr{
+         td{
+            max-width:300px;
+            overflow: hidden;
+            text-overflow:ellipsis;
+            white-space: nowrap;
+         }
+      }
    }
    .operaIcon{
       a{
          font-size:20px;
-         color:$mainBtn;
+         color:$main-color;
       }
    }
    .fileImg{
@@ -21,4 +29,38 @@
          vertical-align: middle;
       }
    }
+   .ant-table-pagination.ant-pagination{
+      float:left;
+   }
+}
+
+/*---------------------------------------------添加资源样式--------------------------------------------------*/
+.resAdd{
+    width:90%;
+    margin:30px 5%;
+    background:#fff;
+    border-radius:5px;
+    .resTitle{
+       .ant-form-item{
+          padding:20px 0px;
+          border-bottom:1px solid #e8e8e8;
+          margin:0px;
+       }
+    }
+   .res-field{
+      padding:30px;
+      table{
+         border:1px solid $main-color;
+      }
+      .add-field-btn{
+         font-size:40px;
+         float:right;
+         margin-right:50px;
+         margin-top:7px;
+         color:#fff;
+         z-index:100;
+         cursor: pointer;
+      }
+   }
+
 }

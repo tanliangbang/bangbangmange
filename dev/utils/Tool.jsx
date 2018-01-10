@@ -6,7 +6,7 @@ const Tool = {};
  * @param {any} t
  * @returns
  */
-Tool.formatDate = function (str) {
+Tool.formatDate1 = function (str) {
     var date = new Date(str);
     var time = new Date().getTime() - date.getTime(); //现在的时间-传入的时间 = 相差的时间（单位 = 毫秒）
     if (time < 0) {
@@ -24,6 +24,47 @@ Tool.formatDate = function (str) {
     } else {
         return parseInt(time / 31536000000) + '年前';
     }
+}
+
+/**
+ * 格式化时间2
+ *
+ * @param {any} t
+ * @returns
+ */
+Tool.formatDate2 = function (currDate,str){
+    if(currDate==""||currDate==null){
+        return;
+    }
+    var nowDate = new Date(currDate);
+    var year = nowDate.getFullYear();    //获取完整的年份(4位,1970-????)
+    var month = nowDate.getMonth()+1;       //获取当前月份(0-11,0代表1月)
+    var day = nowDate.getDate();        //获取当前日(1-31)
+    var hh = nowDate.getHours();
+    var mm = nowDate.getMinutes();
+    var ss = nowDate.getSeconds();
+    if(str=="china"){
+        return (year+'年'+month+'月'+day+"日"+ "  " +hh+":"+mm +":"+ss);
+    }
+    if(month<10){
+        month =  "0"+month
+    }
+
+    if(day<10){
+        day =  "0"+day
+    }
+
+    if(hh<10){
+        hh = "0"+hh;
+    }
+    if(mm<10){
+        mm = "0"+mm;
+    }
+
+    if(ss<10){
+        ss = "0"+ss;
+    }
+    return (year+str+month+str+day+"  "+hh+":"+mm+":"+ss);
 }
 
 /**
@@ -114,31 +155,6 @@ Tool.dealFileSize = function(size){
         size =  (size/(1024*1024)).toFixed(1)+"M";
     }
     return size;
-}
-
-
-Tool.uploadImg = function(callbak){
-    var callbak = callbak;
-    $.ajaxFileUpload
-    (
-        {
-            url:'/api/upload/uploadImg',//用于文件上传的服务器端请求 地址（本机为fxb.abc.com）
-            secureuri:false,//一般设置为false
-            fileElementId:"resImg",//文件上传空间的id属性  <input type="resImg" id="file" name="resImg" />
-            dataType: 'jsonp',//返回值类型 一般设置为json
-            jsonp: 'jsoncallback',
-            jsonpCallback:'success_jsonpCallback',
-            success: function (data, status)  //服务器成功响应处理函数
-            {
-                callbak(data);
-            },
-            error: function (data, status, e)//服务器响应失败处理函数
-            {
-                console.log(e)
-                alert("上传失败，请重新上传");
-            }
-        }
-    )
 }
 
 

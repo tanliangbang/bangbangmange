@@ -1,4 +1,4 @@
-import { Tool, merged } from '../Tool';
+import { Tool, merged } from '../utils/Tool';
 import * as actionConstant from '../constants/actionConstant';
 import axios  from 'axios';
 
@@ -29,10 +29,12 @@ export const changeResContentList = (response) => ({
     resContentList: response
 })
 
-export const getResContentList = (type) => {
+export const getResContentList = (type,current, pageSize,resolve,reject) => {
+    var start = (current-1)*pageSize
     return dispatch => {
-        axios.get(api.getResContentListUrl+"?name="+type).then(function (res) {
+        axios.get(api.getResContentListUrl+"?name="+type+"&start="+start+"&size="+pageSize).then(function (res) {
             dispatch(changeResContentList(res.data.data))
+            resolve("成功");
         }).catch(function (response) {
             console.log("获取资源内容列表失败")
         });
@@ -46,10 +48,11 @@ export const changeResDetail = (response) => ({
     resDetail: response
 })
 
-export const getResDetail = (id) => {
+export const getResDetail = (id,resolve,reject) => {
     return dispatch => {
         axios.get(api.getResDetailUrl+"?id="+id).then(function (res) {
             dispatch(changeResDetail(res.data.data[0]))
+            resolve();
         }).catch(function (response) {
             console.log("获取资源详情失败")
         });
