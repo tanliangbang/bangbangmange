@@ -63,7 +63,7 @@ module.exports = {
     },
     //插件项
     plugins: [//将外部的包导出成一个公用的文件比如 jquery，react, react-dom 等
-        new webpack.optimize.CommonsChunkPlugin('common','/js/common.js'),
+        new webpack.optimize.CommonsChunkPlugin('common','/js/Common.js'),
         new HtmlwebpackPlugin({
             title: 'BBD',
             template:'./dev/index.html', //html模板路径

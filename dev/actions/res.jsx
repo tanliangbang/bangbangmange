@@ -11,10 +11,11 @@ export const changeResList = (response) => ({
      resList: response
 })
 
-export const getResList = () => {
+export const getResList = (resolve,reject) => {
     return dispatch => {
             axios.get(api.getResListUrl,{}).then(function (res) {
                 dispatch(changeResList(res.data.data))
+                resolve();
             }).catch(function (response) {
                  console.log("获取资源列表失败")
             });
@@ -58,6 +59,30 @@ export const getResDetail = (id,resolve,reject) => {
         });
     }
 }
+
+
+export const addRes = (res,resolve,reject) => {
+    return dispatch => {
+        axios.post(api.getAddResUrl,res).then(function (res) {
+            dispatch(getResList(resolve,reject))
+        }).catch(function (response) {
+            reject();
+        });
+    }
+}
+
+
+export const delRes = (id,resolve,reject) => {
+    return dispatch => {
+        axios.post(api.getDelResUrl,{id:id}).then(function (res) {
+            dispatch(getResList(resolve,reject))
+        }).catch(function (response) {
+            reject();
+        });
+    }
+}
+
+
 
 
 

@@ -2,9 +2,10 @@ import './style.scss'
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Table, Icon, Divider } from 'antd';
+import { Table, Icon, Divider,Button,message } from 'antd';
 import * as resAction from '../../actions/res';
 import { Tool } from '../../utils/Tool';
+import  Mask  from '../../Components/Common/Mask';
 
 export class ResContentList extends React.Component {
     constructor(props) {
@@ -30,6 +31,7 @@ export class ResContentList extends React.Component {
         }
         this.state = {
             loading:false,
+            delLoading:false,
             pagination:pagination
         }
     }
@@ -40,6 +42,7 @@ export class ResContentList extends React.Component {
         var id = nextProps.router.query.id;
         if(currId!=nextProps.router.query.id){
             this.getListData(type,id);
+
         }
     }
 
@@ -48,6 +51,39 @@ export class ResContentList extends React.Component {
         var id = this.props.router.query.id;
         this.getListData(type,id);
     }
+    showMask(){
+        this.refs.mask.showModal("确定删除当前资源和资源里面的内容？")
+    }
+
+    success(text) {
+        message.success(text);
+    }
+
+    error(text){
+        message.error(text);
+    }
+
+    delCurrRes(){
+        var id = this.props.router.query.id;
+        var _this = this;
+        _this.setState({
+            delLoading:true
+        })
+        new Promise(function(resolve,reject){
+            _this.props.actions.delRes(id,resolve,reject)
+        }).then(function(){
+            _this.success("删除成功");
+            _this.setState({
+                delLoading:false
+            })
+        }).catch(function(reason){
+            _this.setState({
+                delLoading:false
+            })
+            _this.success("删除失败");
+        });
+    }
+
 
     getDate(current, pageSize){
         var type = this.props.router.query.type;
@@ -78,7 +114,11 @@ export class ResContentList extends React.Component {
 
     dealResDetail(resDetail){
         if(resDetail===null) return [];
-         var content = JSON.parse(resDetail.type_specification);
+        if(resDetail.type_specification===""){
+            content = "";
+        }else{
+            var content = JSON.parse(resDetail.type_specification);
+        }
          var column = {};
          var columns = [];
          var nomalColumn = [{
@@ -157,16 +197,22 @@ export class ResContentList extends React.Component {
 
 
     render() {
-        const {loading,pagination} = this.state;
+        const {loading,pagination,delLoading} = this.state;
         const {resDetail,resContentList} = this.props;
+        if(resDetail==null||resContentList==null) return <div></div>;
         let columns = this.dealResDetail(resDetail);
         let dataSource = this.dealResContentList(resContentList);
-        let _this = this;
-        if(columns.length<=0||dataSource.length<=0) return <div></div>;
         return (
             <div className="resContentList">
+                <div>
+                    <Button type="primary" className="main-btn"  htmlType="button" >添 加 数 据</Button>
+                    <Button type="primary" className="main-btn"  htmlType="button" >修 改 资 源</Button>
+                    <Button type="primary" loading={delLoading} onClick={this.showMask.bind(this)} className="main-btn"
+                            htmlType="button" >删 除 资 源</Button>
+                </div>
                 <div className="common-title">{resDetail.cname+"("+resDetail.name+")列表"}</div>
                 <Table dataSource={dataSource} columns={columns} loading={loading}  pagination={pagination}  />
+                <Mask callback={this.delCurrRes.bind(this)} ref="mask"/>
             </div>
         );
     }

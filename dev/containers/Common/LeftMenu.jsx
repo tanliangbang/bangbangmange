@@ -13,11 +13,18 @@ export class leftMenu extends Component {
 
     constructor(props) {
         super(props);
-        this.props.actions.getResList();
         this.rootSubmenuKeys = ['sub1', 'sub3'];
         this.state = {
             openKeys: ['sub1'],
         };
+
+        var _this = this;
+        new Promise(function(resolve,reject){
+            _this.props.actions.getResList(resolve,reject);
+        }).then(function(){
+
+        })
+
     }
 
 
