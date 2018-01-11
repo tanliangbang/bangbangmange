@@ -126,6 +126,12 @@ export class ResFieldAdd extends React.Component {
                             </Select>
                         )}
                     </FormItem>
+                   <FormItem {...formItemLayout} label="选择项" className="none">
+                            {getFieldDecorator('enumVal', {
+                            })(
+                                <Input  placeholder="用逗号隔开" />
+                            )}
+                    </FormItem>
                     <FormItem {...formItemLayout} label="是否必须">
                         {getFieldDecorator('dataIsNeed', {
                             valuePropName: 'checked',

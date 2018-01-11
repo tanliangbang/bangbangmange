@@ -11,6 +11,7 @@ module.exports = {
     getResContentListUrl:API_BASE + '/api/res/getResContentList',
     getResDetailUrl:API_BASE + '/api/res/getRes',
     getAddResUrl:API_BASE + '/api/res/addRes',
-    getDelResUrl:API_BASE + '/api/res/delRes'
+    getDelResUrl:API_BASE + '/api/res/delRes',
+    getEditResUrl:API_BASE + '/api/res/updateRes'
 };
 

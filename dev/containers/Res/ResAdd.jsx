@@ -2,22 +2,61 @@ import './style.scss'
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Table,Form, Input,Divider, Icon, Button, AutoComplete,Select,message } from 'antd';
+import { browserHistory } from 'react-router';
+import { Table,Form, Input,Divider, Icon, Button,message } from 'antd';
 import * as resAction from '../../actions/res';
-import { Tool } from '../../utils/Tool';
 import ResFieldAdd from "../../Components/Res/ResFieldAdd";
-
-
 const FormItem = Form.Item;
 
 export class ResAdd extends React.Component {
     constructor(props) {
         super(props);
+        let currId = this.props.router.query.id;
+        let isEdit = false;
+        if(currId!==undefined){
+            isEdit = true;
+        }
         this.state = {
             dataSource:[],
-            commiting:false
+            commiting:false,
+            currId:currId,
+            isEdit:isEdit,
+            oldTableName:""
+        }
+
+    }
+
+    componentDidMount(){
+        let currId = this.state.currId;
+        let _this = this;
+        if(this.state.isEdit){
+            new Promise(function(resolve,reject){
+                _this.props.actions.getResDetail(currId,resolve,reject)
+            }).then(function(res){
+                _this.props.form.setFieldsValue({name:res.name,cname:res.cname})
+               let dataSource = _this.dealResFieldList(res.type_specification)
+                _this.setState({
+                    dataSource:dataSource,
+                    oldTableName:res.name
+                })
+            }).catch(function(reason){
+            });
         }
     }
+
+    dealResFieldList(type_specification){
+        let tempArr = [];
+        let currData = JSON.parse(type_specification);
+        let currIndex = 0;
+        for(let item in currData){
+            currData[item].key = currIndex;
+            currData[item].name = item;
+            tempArr.push(currData[item]);
+            currIndex++;
+        }
+        return tempArr;
+    }
+
 
 
     showAddResField(){
@@ -44,6 +83,7 @@ export class ResAdd extends React.Component {
     editCurrField(index){
         let dataSource = this.state.dataSource;
         var currData = dataSource[index];
+        console.log(currData)
         if(currData.dataIsNeed==1){
             currData.dataIsNeed = true;
         }else{
@@ -77,27 +117,35 @@ export class ResAdd extends React.Component {
 
     handleSubmit(e){
         e.preventDefault();
-        var _this = this;
+        let _this = this;
+        let currId = this.state.currId;
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 _this.setState({
                     commiting:true
                 })
                 values.type_specification = this.deal_fieldFn(this.state.dataSource)
+                if(currId!==undefined){
+                    values.id = currId;
+                    values.tempTableName = this.state.oldTableName;
+                }
                 new Promise(function(resolve,reject){
-                    _this.props.actions.addRes(values,resolve,reject);
+                      _this.props.actions.addOrEditRes(values,resolve,reject);
                 }).then(function(){
                     _this.setState({
                         commiting:false,
                         dataSource:[]
                     })
                     _this.props.form.resetFields();
-                    _this.success("添加成功");
+                    _this.success("操作成功");
+                    if(currId!==undefined){
+                        browserHistory.push("resContentList?id="+currId+"&type="+values.name)
+                    }
                 }).catch(function(reason){
                     _this.setState({
                         commiting:false
                     })
-                    _this.success("添加失败");
+                    _this.success("操作失败");
                 });
             }
         });
@@ -111,7 +159,9 @@ export class ResAdd extends React.Component {
         }
         var str = "{";
         for(var i=0;i<arr.length;i++){
-            str =str+ '"'+arr[i].name+'":{"dataChinaName":"'+ arr[i].dataChinaName+'","dataType":"'+arr[i].dataType+'","dataIsNeed":"'+arr[i].dataIsNeed+'","brief":"'+arr[i].brief+'","isShow":"'+arr[i].isShow+'","enumVal":"'+arr[i].enumVal+'"},'
+            str =str+ '"'+arr[i].name+'":{"dataChinaName":"'+ arr[i].dataChinaName
+                +'","dataType":"'+arr[i].dataType+'","dataIsNeed":"'+arr[i].dataIsNeed
+                +'","brief":"'+arr[i].brief+'","isShow":"'+arr[i].isShow+'","enumVal":"'+arr[i].enumVal+'"},'
         }
         str = str.substr(0,str.length-1) + "}";
         return str;
@@ -124,7 +174,8 @@ export class ResAdd extends React.Component {
             wrapperCol: { span: 8 }
         };
         const { getFieldDecorator } = this.props.form;
-        const {dataSource,commiting} = this.state;
+        const {dataSource,commiting,isEdit} = this.state;
+
         const columns = [{
             title: '中文名称',
             dataIndex: 'dataChinaName',
@@ -197,7 +248,7 @@ export class ResAdd extends React.Component {
                  <ResFieldAdd changeField={this.changeField.bind(this)} addFieldFn={this.addFieldFn.bind(this)} wrappedComponentRef={(inst) => this.formRef = inst} />
 
                   <div className="text-center">
-                      <Button type="primary" loading={commiting} className="main-btn"  htmlType="submit" >添 加</Button>
+                      <Button type="primary" loading={commiting} className="main-btn"  htmlType="submit" >{isEdit?"修 改":"添 加"}</Button>
                   </div>
               </Form>
         );

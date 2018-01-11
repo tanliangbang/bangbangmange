@@ -2,6 +2,7 @@ import './style.scss'
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { browserHistory } from 'react-router';
 import { Table, Icon, Divider,Button,message } from 'antd';
 import * as resAction from '../../actions/res';
 import { Tool } from '../../utils/Tool';
@@ -12,6 +13,8 @@ export class ResContentList extends React.Component {
         super(props);
         var _this = this;
         var type = this.props.router.query.type;
+        var id = this.props.router.query.id;
+
         var pagination = {
             total: 0,
             defaultCurrent: 1,
@@ -32,7 +35,9 @@ export class ResContentList extends React.Component {
         this.state = {
             loading:false,
             delLoading:false,
-            pagination:pagination
+            pagination:pagination,
+            type:type,
+            id:id
         }
     }
 
@@ -42,13 +47,12 @@ export class ResContentList extends React.Component {
         var id = nextProps.router.query.id;
         if(currId!=nextProps.router.query.id){
             this.getListData(type,id);
-
         }
     }
 
     componentWillMount(){
-        var type = this.props.router.query.type;
-        var id = this.props.router.query.id;
+        var type = this.state.type;
+        var id = this.state.id;
         this.getListData(type,id);
     }
     showMask(){
@@ -64,7 +68,7 @@ export class ResContentList extends React.Component {
     }
 
     delCurrRes(){
-        var id = this.props.router.query.id;
+        var id = this.state.id;
         var _this = this;
         _this.setState({
             delLoading:true
@@ -85,8 +89,13 @@ export class ResContentList extends React.Component {
     }
 
 
+    editRes(){
+        browserHistory.push("resAdd?id="+this.state.id)
+    }
+
+
     getDate(current, pageSize){
-        var type = this.props.router.query.type;
+        var type = this.state.type;
         var _this = this;
         _this.setState({loading:true})
         new Promise(function(resolve,reject){
@@ -206,9 +215,10 @@ export class ResContentList extends React.Component {
             <div className="resContentList">
                 <div>
                     <Button type="primary" className="main-btn"  htmlType="button" >添 加 数 据</Button>
-                    <Button type="primary" className="main-btn"  htmlType="button" >修 改 资 源</Button>
-                    <Button type="primary" loading={delLoading} onClick={this.showMask.bind(this)} className="main-btn"
-                            htmlType="button" >删 除 资 源</Button>
+                    <Button type="primary" className="main-btn" onClick={this.editRes.bind(this)}
+                            htmlType="button" >修 改 资 源</Button>
+                    <Button type="primary" loading={delLoading} onClick={this.showMask.bind(this)}
+                            className="main-btn" htmlType="button" >删 除 资 源</Button>
                 </div>
                 <div className="common-title">{resDetail.cname+"("+resDetail.name+")列表"}</div>
                 <Table dataSource={dataSource} columns={columns} loading={loading}  pagination={pagination}  />

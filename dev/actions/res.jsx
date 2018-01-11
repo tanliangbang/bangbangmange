@@ -52,8 +52,9 @@ export const changeResDetail = (response) => ({
 export const getResDetail = (id,resolve,reject) => {
     return dispatch => {
         axios.get(api.getResDetailUrl+"?id="+id).then(function (res) {
-            dispatch(changeResDetail(res.data.data[0]))
-            resolve();
+            let data = res.data.data[0];
+            dispatch(changeResDetail(data))
+            resolve(data);
         }).catch(function (response) {
             console.log("获取资源详情失败")
         });
@@ -61,13 +62,22 @@ export const getResDetail = (id,resolve,reject) => {
 }
 
 
-export const addRes = (res,resolve,reject) => {
+export const addOrEditRes = (res,resolve,reject) => {
     return dispatch => {
-        axios.post(api.getAddResUrl,res).then(function (res) {
-            dispatch(getResList(resolve,reject))
-        }).catch(function (response) {
-            reject();
-        });
+        if(res.id===undefined||res.id ===null){
+            axios.post(api.getAddResUrl,res).then(function (res) {
+                dispatch(getResList(resolve,reject))
+            }).catch(function (response) {
+                reject();
+            });
+        }else{
+            axios.post(api.getEditResUrl,res).then(function (res) {
+                dispatch(getResList(resolve,reject))
+            }).catch(function (response) {
+                reject();
+            });
+        }
+
     }
 }
 
