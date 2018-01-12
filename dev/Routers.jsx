@@ -7,6 +7,9 @@ import Login from './containers/Login';
 import Index from './containers/Index';
 import ResContentList from './containers/Res/ResContentList';
 import ResAdd from './containers/Res/ResAdd';
+import ResAddContent from './containers/Res/ResAddContent';
+
+
 
 export const routes = {
 	path: '/',
@@ -20,6 +23,9 @@ export const routes = {
 		},{
 			path: 'resAdd',
 			component: ResAdd,
+		},{
+			path: 'resAddContent',
+			component: ResAddContent
 		}]
 	},{
 		path: 'login',

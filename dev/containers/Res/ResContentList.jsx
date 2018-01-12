@@ -120,6 +120,12 @@ export class ResContentList extends React.Component {
         });
     }
 
+    toAddResContent(){
+        let id = this.state.id;
+        let type = this.state.type;
+        browserHistory.push("resAddContent?id="+id+"&type="+type)
+    }
+
 
     dealResDetail(resDetail){
         if(resDetail===null) return [];
@@ -214,7 +220,7 @@ export class ResContentList extends React.Component {
         return (
             <div className="resContentList">
                 <div>
-                    <Button type="primary" className="main-btn"  htmlType="button" >添 加 数 据</Button>
+                    <Button type="primary" className="main-btn" onClick={this.toAddResContent.bind(this)}  htmlType="button" >添 加 数 据</Button>
                     <Button type="primary" className="main-btn" onClick={this.editRes.bind(this)}
                             htmlType="button" >修 改 资 源</Button>
                     <Button type="primary" loading={delLoading} onClick={this.showMask.bind(this)}

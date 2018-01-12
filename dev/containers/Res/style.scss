@@ -47,7 +47,7 @@
 .resAdd{
     width:90%;
     margin:30px 5%;
-   padding-bottom:30px;
+    padding-bottom:30px;
     background:#fff;
     border-radius:5px;
     .resTitle{
@@ -79,4 +79,26 @@
       }
    }
 
+}
+
+
+
+/*---------------------------------------------添加资源内容样式--------------------------------------------------*/
+
+.res-add-content{
+   width:90%;
+   margin:30px 5%;
+   padding-bottom:30px;
+   background:#fff;
+   border-radius:5px;
+   .resAddContentForm{
+      margin-top:30px;
+   }
+      .ant-upload{
+         width:400px;
+         height:200px;
+         border:1px dashed $main-color;
+         color:$main-color;
+         font-size:20px;
+   }
 }
