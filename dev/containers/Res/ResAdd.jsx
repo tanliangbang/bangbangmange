@@ -35,6 +35,7 @@ export class ResAdd extends React.Component {
             }).then(function(res){
                 _this.props.form.setFieldsValue({name:res.name,cname:res.cname})
                let dataSource = _this.dealResFieldList(res.type_specification)
+                console.log(res)
                 _this.setState({
                     dataSource:dataSource,
                     oldTableName:res.name

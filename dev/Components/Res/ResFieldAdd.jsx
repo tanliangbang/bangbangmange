@@ -13,7 +13,8 @@ export class ResFieldAdd extends React.Component {
         this.state = {
             visible: false,
             confirmLoading: false,
-            currId:null
+            currId:null,
+            isEnum:false
         }
     }
 
@@ -38,6 +39,16 @@ export class ResFieldAdd extends React.Component {
         this.setState({
             visible: false,
         });
+    }
+
+    changeSelect(value){
+        let boolean = false;
+        if(value==="enum"||value==="select"){
+            boolean = true;
+        }
+        this.setState({
+            isEnum:boolean
+        })
     }
 
     handleSubmit(e){
@@ -74,7 +85,7 @@ export class ResFieldAdd extends React.Component {
         };
 
         const { getFieldDecorator } = this.props.form;
-        const { visible, confirmLoading, ModalText,currId } = this.state;
+        const { visible, confirmLoading, ModalText,currId,isEnum } = this.state;
         return (
                 <Modal title="添加字段" visible={visible} onCancel={this.handleCancel.bind(this)} footer = {null}>
                     <Form ref="form" onSubmit={this.handleSubmit.bind(this)} className="resAddFieldForm">
@@ -115,21 +126,22 @@ export class ResFieldAdd extends React.Component {
                                 message: '请选择类型',
                             }],
                         })(
-                            <Select >
+                            <Select placeholder="--请选择--" onChange={this.changeSelect.bind(this)}>
                                 <Option value="text">text</Option>
                                 <Option value="textarea">textarea</Option>
                                 <Option value="file">file</Option>
                                 <Option value="date">date</Option>
                                 <Option value="time">time</Option>
                                 <Option value="boolean">boolean</Option>
+                                <Option value="select">select</Option>
                                 <Option value="enum">enum</Option>
                             </Select>
                         )}
                     </FormItem>
-                   <FormItem {...formItemLayout} label="选择项" className="none">
+                   <FormItem {...formItemLayout} label="选择项" className={isEnum?"":"none"}>
                             {getFieldDecorator('enumVal', {
                             })(
-                                <Input  placeholder="用逗号隔开" />
+                                <Input  placeholder="用逗号隔开 例如(选项1:aaa,选项2:bbb)" />
                             )}
                     </FormItem>
                     <FormItem {...formItemLayout} label="是否必须">

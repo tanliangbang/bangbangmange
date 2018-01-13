@@ -12,6 +12,10 @@ module.exports = {
     getResDetailUrl:API_BASE + '/api/res/getRes',
     getAddResUrl:API_BASE + '/api/res/addRes',
     getDelResUrl:API_BASE + '/api/res/delRes',
-    getEditResUrl:API_BASE + '/api/res/updateRes'
+    getEditResUrl:API_BASE + '/api/res/updateRes',
+    getAddResContentUrl:API_BASE + '/api/res/addResContent',
+    getResContentUrl:API_BASE + '/api/res/getResContentById',
+    getEditResContentUrl:API_BASE + '/api/res/UpdateResContent',
+    getDelResContentUrl:API_BASE + '/api/res/delResContent',
 };
 

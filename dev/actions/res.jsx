@@ -92,8 +92,72 @@ export const delRes = (id,resolve,reject) => {
     }
 }
 
+export const addOrEditorResContent = (fieldList,name,resContentId,resolve,reject) => {
+    let startTime = fieldList.startTime;
+    let endTime = fieldList.endTime;
+    let isOnLine = fieldList.isOnLine?"1":"0";
+    delete fieldList.startTime;
+    delete fieldList.endTime;
+    delete fieldList.isOnLine;
+    let content = JSON.stringify(fieldList);
+    let param = {
+        startTime:startTime,
+        endTime:endTime,
+        onLine:isOnLine,
+        content:content,
+        name:name
+    }
+    return dispatch => {
+        if(resContentId){
+            param.resContentId = resContentId
+            axios.post(api.getEditResContentUrl,param).then(function (res) {
+                resolve();
+            }).catch(function (response) {
+                reject();
+            });
+        }else{
+            axios.post(api.getAddResContentUrl,param).then(function (res) {
+                resolve();
+                // dispatch(getResContentList(name,1, 5,resolve,reject))
+            }).catch(function (response) {
+                reject();
+            });
+        }
+
+    }
+}
 
 
+
+
+
+export const changeResContent = (response) => ({
+    type: actionConstant.GET_RES_CONTENT,
+    resContent: response
+})
+
+export const getResContent = (id,name,resolve,reject) => {
+    return dispatch => {
+        axios.get(api.getResContentUrl+"?id="+id+"&name="+name).then(function (res) {
+            dispatch(changeResContent(res.data.data[0]))
+            resolve(res.data.data[0]);
+        }).catch(function (response) {
+            reject("获取资源内容失败")
+        });
+    }
+}
+
+
+export const delResContent = (id,type,resolve,reject) => {
+    return dispatch => {
+        axios.post(api.getDelResContentUrl,{id:id,type:type}).then(function (res) {
+            dispatch(getResContentList(type,1, 5,resolve,reject))
+            resolve();
+        }).catch(function (response) {
+            reject();
+        });
+    }
+}
 
 
 

@@ -1,10 +1,7 @@
 import './style.scss'
-import React, { Component, PropTypes } from 'react'
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import React, { Component } from 'react'
 import { Upload, Icon, message } from 'antd';
-import * as resAction from '../../actions/res';
-import { Tool } from '../../utils/Tool';
+
 
 
 function beforeUpload(file) {
@@ -26,6 +23,12 @@ export class UploadImg extends Component {
         this.state = {
             loading: false
         };
+    }
+
+    setImgUrl(imgUrl){
+        this.setState({
+            imageUrl:imgUrl,
+        });
     }
 
 

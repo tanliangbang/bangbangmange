@@ -11,11 +11,10 @@ import  Mask  from '../../Components/Common/Mask';
 export class ResContentList extends React.Component {
     constructor(props) {
         super(props);
-        var _this = this;
-        var type = this.props.router.query.type;
-        var id = this.props.router.query.id;
-
-        var pagination = {
+        let _this = this;
+        let type = this.props.router.query.type;
+        let id = this.props.router.query.id;
+        let pagination = {
             total: 0,
             defaultCurrent: 1,
             pageSize: 5,
@@ -37,25 +36,33 @@ export class ResContentList extends React.Component {
             delLoading:false,
             pagination:pagination,
             type:type,
-            id:id
+            id:id,
+            maskCallback:null
         }
     }
 
     componentWillReceiveProps(nextProps){
-        var currId = this.props.router.query.id;
-        var type = nextProps.router.query.type;
-        var id = nextProps.router.query.id;
+        let currId = this.props.router.query.id;
+        let type = nextProps.router.query.type;
+        let id = nextProps.router.query.id;
         if(currId!=nextProps.router.query.id){
+            this.setState({
+                type:type,
+                id:id
+            })
             this.getListData(type,id);
         }
     }
 
     componentWillMount(){
-        var type = this.state.type;
-        var id = this.state.id;
+        let type = this.props.router.query.type;
+        let id = this.props.router.query.id;
         this.getListData(type,id);
     }
-    showMask(){
+    showMask(maskCallback){
+        this.setState({
+            maskCallback:maskCallback
+        })
         this.refs.mask.showModal("确定删除当前资源和资源里面的内容？")
     }
 
@@ -91,6 +98,18 @@ export class ResContentList extends React.Component {
 
     editRes(){
         browserHistory.push("resAdd?id="+this.state.id)
+    }
+
+    delCurrResContent(index,id){
+        let _this = this;
+        let type = this.state.type
+        new Promise(function(resolve,reject){
+            _this.props.actions.delResContent(id,type,resolve,reject)
+        }).then(function(){
+            _this.success("删除成功");
+        }).catch(function(res){
+            _this.success("删除失败");
+        });
     }
 
 
@@ -134,6 +153,8 @@ export class ResContentList extends React.Component {
         }else{
             var content = JSON.parse(resDetail.type_specification);
         }
+        let resId = this.state.id;
+        let resName = this.state.type;
          var column = {};
          var columns = [];
          var nomalColumn = [{
@@ -152,11 +173,11 @@ export class ResContentList extends React.Component {
              title: '操作',
              key: 'option',
              className:"operaIcon",
-             render: (text, record) => (
+             render: (text, record,index) => (
                  <span>
-                  <a href="#"> <Icon type="edit" /></a>
+                  <a href={"resAddContent?resContentId="+record.id+"&id="+resId+"&type="+resName} > <Icon type="edit" /></a>
                   <Divider type="vertical" />
-                  <a href="#"><Icon type="delete" /></a>
+                  <a onClick={this.showMask.bind(this,this.delCurrResContent.bind(this,index,record.id))}><Icon type="delete" /></a>
                 </span>
              ),
          }]
@@ -196,6 +217,12 @@ export class ResContentList extends React.Component {
         var content = "";
         for(var i=0;i<list.length;i++){
              content = list[i].content;
+             for(let item in content){
+                 if(content[item] instanceof Array){
+                   content[item] = content[item].join(",")
+                 }
+             }
+             content["id"] = list[i].id;
              content['createTime'] = Tool.formatDate2(list[i].createTime,"-");
              content['modifiedTime'] = Tool.formatDate2(list[i].modifiedTime,"-");
             if(list[i].isOnLine==1){
@@ -223,12 +250,12 @@ export class ResContentList extends React.Component {
                     <Button type="primary" className="main-btn" onClick={this.toAddResContent.bind(this)}  htmlType="button" >添 加 数 据</Button>
                     <Button type="primary" className="main-btn" onClick={this.editRes.bind(this)}
                             htmlType="button" >修 改 资 源</Button>
-                    <Button type="primary" loading={delLoading} onClick={this.showMask.bind(this)}
+                    <Button type="primary" loading={delLoading} onClick={this.showMask.bind(this,this.delCurrRes.bind(this))}
                             className="main-btn" htmlType="button" >删 除 资 源</Button>
                 </div>
                 <div className="common-title">{resDetail.cname+"("+resDetail.name+")列表"}</div>
                 <Table dataSource={dataSource} columns={columns} loading={loading}  pagination={pagination}  />
-                <Mask callback={this.delCurrRes.bind(this)} ref="mask"/>
+                <Mask callback={this.state.maskCallback} ref="mask"/>
             </div>
         );
     }

@@ -7,7 +7,8 @@ import * as actionConstant from '../constants/actionConstant';
 let initRes = {
     resList:[],
     resContentList:null,
-    resDetail:null
+    resDetail:null,
+    resContent:null
 }
 
 export default function res(state = initRes, action) {
@@ -23,6 +24,10 @@ export default function res(state = initRes, action) {
         case actionConstant.GET_RES_DETAIL:
             return Object.assign({}, state, {
                 resDetail:action.resDetail
+            });
+        case actionConstant.GET_RES_CONTENT:
+            return Object.assign({}, state, {
+                resContent:action.resContent
             });
 
 
