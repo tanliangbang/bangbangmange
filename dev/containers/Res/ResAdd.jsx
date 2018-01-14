@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { browserHistory } from 'react-router';
 import { Table,Form, Input,Divider, Icon, Button,message } from 'antd';
-import * as resAction from '../../actions/res';
-import ResFieldAdd from "../../Components/Res/ResFieldAdd";
+import * as resAction from '../../actions/res.jsx';
+import ResFieldAdd from "../../Components/Res/ResFieldAdd.jsx";
 const FormItem = Form.Item;
 
 export class ResAdd extends React.Component {
@@ -216,7 +216,8 @@ export class ResAdd extends React.Component {
 
 
         return (
-              <Form ref="form" onSubmit={this.handleSubmit.bind(this)} className="resAdd">
+            <div className="resAdd">
+              <Form ref="form" onSubmit={this.handleSubmit.bind(this)} >
                 <div className="common-title">添加资源</div>
                     <div className="resTitle">
                             <FormItem {...formItemLayout} label="资源表名">
@@ -249,9 +250,10 @@ export class ResAdd extends React.Component {
                  <ResFieldAdd changeField={this.changeField.bind(this)} addFieldFn={this.addFieldFn.bind(this)} wrappedComponentRef={(inst) => this.formRef = inst} />
 
                   <div className="text-center">
-                      <Button type="primary" loading={commiting} className="main-btn"  htmlType="submit" >{isEdit?"修 改":"添 加"}</Button>
+                      <Button type="primary" loading={commiting}   htmlType="submit" >{isEdit?"修 改":"添 加"}</Button>
                   </div>
               </Form>
+            </div>
         );
     }
 }

@@ -4,9 +4,9 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { browserHistory } from 'react-router';
 import { Table, Icon, Divider,Button,message } from 'antd';
-import * as resAction from '../../actions/res';
-import { Tool } from '../../utils/Tool';
-import  Mask  from '../../Components/Common/Mask';
+import * as resAction from '../../actions/res.jsx';
+import { Tool } from '../../utils/Tool.jsx';
+import  Mask  from '../../Components/Common/Mask.jsx';
 
 export class ResContentList extends React.Component {
     constructor(props) {
@@ -247,11 +247,11 @@ export class ResContentList extends React.Component {
         return (
             <div className="resContentList">
                 <div>
-                    <Button type="primary" className="main-btn" onClick={this.toAddResContent.bind(this)}  htmlType="button" >添 加 数 据</Button>
-                    <Button type="primary" className="main-btn" onClick={this.editRes.bind(this)}
+                    <Button type="primary"  onClick={this.toAddResContent.bind(this)}  htmlType="button" >添 加 数 据</Button>
+                    <Button type="primary"  onClick={this.editRes.bind(this)}
                             htmlType="button" >修 改 资 源</Button>
                     <Button type="primary" loading={delLoading} onClick={this.showMask.bind(this,this.delCurrRes.bind(this))}
-                            className="main-btn" htmlType="button" >删 除 资 源</Button>
+                             htmlType="button" >删 除 资 源</Button>
                 </div>
                 <div className="common-title">{resDetail.cname+"("+resDetail.name+")列表"}</div>
                 <Table dataSource={dataSource} columns={columns} loading={loading}  pagination={pagination}  />

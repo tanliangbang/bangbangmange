@@ -8,9 +8,9 @@ import React ,{Component} from 'react'
 import { Link } from 'react-router'
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import Menu from './../Common/Menu'
-import Footer from './../Common/Footer'
-import LeftMenu from './../Common/LeftMenu'
+import Menu from './../Common/Menu.jsx'
+import Footer from './../Common/Footer.jsx'
+import LeftMenu from './../Common/LeftMenu.jsx'
 
 class Index extends Component {
 	constructor(props) {

@@ -27,7 +27,7 @@ export class Login extends Component {
                         <Checkbox  />记住密码
                         <a>忘记密码</a>
                     </div>
-                    <Button  type="primary">登&nbsp;&nbsp;入</Button>
+                    <Button  type="primary" >登&nbsp;&nbsp;入</Button>
                 </form>
             </div>
         );

@@ -4,15 +4,15 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Table,Form, Input,Divider, Icon, Button,
     message,DatePicker,TimePicker,Switch,Select,Checkbox} from 'antd';
-import * as resAction from '../../actions/res';
-import { Tool } from '../../utils/Tool';
-import UploadImg from '../../Components/Common/UploadImg';
+import * as resAction from '../../actions/res.jsx';
+import { Tool } from '../../utils/Tool.jsx';
+import UploadImg from '../../Components/Common/UploadImg.jsx';
 import {browserHistory,withRouter } from "react-router";
 import moment from 'moment';
 
-require('./../../public/plugins/ueditor/ueditor.config.js');
-require('./../../public/plugins/ueditor/ueditor.all.js');
-require('./../../public/plugins/ueditor/lang/zh-cn/zh-cn.js');
+require('./../../assets/plugins/ueditor/ueditor.config.js');
+require('./../../assets/plugins/ueditor/ueditor.all.js');
+require('./../../assets/plugins/ueditor/lang/zh-cn/zh-cn.js');
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -526,7 +526,7 @@ export class ResAddContent extends React.Component {
                     </FormItem>
 
                     <div className="text-center">
-                        <Button type="primary" className="main-btn" loading={commiting}  htmlType="submit" >{resContentId?"修 改":"添 加"}</Button>
+                        <Button type="primary"  loading={commiting}  htmlType="submit" >{resContentId?"修 改":"添 加"}</Button>
                     </div>
                 </form>
 

@@ -18,10 +18,8 @@ const DevTools = createDevTools(
   </DockMonitor>
 )  
 
-import Routers from './Routers'
-
-//获取合并后的 reducer
-import rootReducer from './reducers/index'
+import Routers from './Routers.jsx'
+import rootReducer from './reducers/index.jsx'
 
 //注册store
 const store = createStore(

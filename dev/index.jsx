@@ -8,10 +8,10 @@ import { browserHistory} from 'react-router' // 路由
 import { syncHistoryWithStore } from 'react-router-redux' //路由使用redux管理
 import configureStore from './store/configureStore';
 
-import Routers from './Routers'
+import Routers from './Routers.jsx'
 
 //获取合并后的 reducer
-import rootReducer from './reducers/index'
+import rootReducer from './reducers/index.jsx'
 
 //注册store
 const store = configureStore();

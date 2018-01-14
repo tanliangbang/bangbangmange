@@ -4,7 +4,7 @@ import { Layout, Menu, Breadcrumb, Icon } from 'antd';
 import { Link } from 'react-router';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import * as resAction from '../../actions/res';
+import * as resAction from '../../actions/res.jsx';
 
 const { Header, Content, Footer, Sider } = Layout;
 const SubMenu = Menu.SubMenu;

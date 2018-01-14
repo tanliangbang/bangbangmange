@@ -57,6 +57,7 @@ module.exports = {
                 loader: 'url?limit=10000&name=fonts/[hash:8].[name].[ext]'
             },
             {test: /\.scss$/, loader: "style!css!sass"},
+            {test: /\.less/, loader: "style!css!less"},
             {test:/\.css$/, loader: ExtractTextPlugin.extract("style-loader", "css")},
             {test: /\.(png|jpg|gif)$/, loader: "url-loader?limit=8192&name=./../img/[hash].[ext]"}
         ]

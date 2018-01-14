@@ -1,8 +1,8 @@
-import { Tool, merged } from '../utils/Tool';
-import * as actionConstant from '../constants/actionConstant';
+import { Tool, merged } from '../utils/Tool.jsx';
+import * as actionConstant from '../constants/actionConstant.jsx';
 import axios  from 'axios';
 
-const api = require( './../utils/api' );
+const api = require( './../utils/api.jsx' );
 
 
 

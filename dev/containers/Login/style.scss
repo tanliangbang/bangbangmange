@@ -1,23 +1,35 @@
+@import "../../style/var.scss";
 .login{
      width:100%;
      height:100%;
     display: flex;
     justify-content:center;
-    align-items:center;
+    background: linear-gradient(to bottom right, #50a3a2 0%, #53e3a6 100%);
+    opacity: 0.8;
      form{
-       width:350px;
+       width:450px;
+       margin-top:300px;
+       background:#fff;
+       border-radius:5px;
+       height:400px;
+       padding:50px;
        p:nth-child(1){
          text-align: center;
          font-size:25px;
+         color:$main-color;
+         margin-bottom:10px;
        }
 
        .ant-input{
          width: 350px;
          height:50px;
-         font-size:22px;
+         font-size:18px;
        }
        >div:nth-child(3){
          margin-top:20px;
+       }
+       button{
+         font-size:18px;
        }
 
        >div:nth-child(4){

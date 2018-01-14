@@ -3,7 +3,7 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Modal, Button, Form, Input,Switch,Select, Icon, AutoComplete} from 'antd';
-import { Tool } from '../../utils/Tool';
+import { Tool } from '../../utils/Tool.jsx';
 const FormItem = Form.Item;
 const Option = Select.Option;
 
@@ -161,7 +161,7 @@ export class ResFieldAdd extends React.Component {
                         )}
                     </FormItem>
                         <div className="text-center">
-                            <Button type="primary" className="main-btn"  htmlType="submit" >{currId===null?"添 加":"修 改"}</Button>
+                            <Button type="primary"   htmlType="submit" >{currId===null?"添 加":"修 改"}</Button>
                         </div>
                     </Form>
 
