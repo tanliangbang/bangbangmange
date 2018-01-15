@@ -49,7 +49,6 @@
     "redux-logger": "2.0.4",
     "redux-thunk": "^2.0.1",
     "sass-loader": "^3.2.3",
-    "scss-loader": "0.0.1",
     "style-loader": "^0.13.0",
     "swiper": "^3.3.1",
     "url-loader": "^0.5.6",
@@ -72,7 +71,6 @@
     "babel-polyfill": "^6.26.0",
     "node-sass": "^4.7.2",
     "plupload": "^2.3.6",
-    "qiniu-js": "^1.0.22",
     "yargs": "^10.1.1"
   }
 }

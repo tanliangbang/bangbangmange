@@ -17,24 +17,35 @@ export const routes = {
 	indexRoute: {component: Index},
 	childRoutes: [{
 		component: Index,
-		childRoutes: [{
+        onEnter:checkLogin,
+        childRoutes: [{
             path: '/',
             component: Home,
         },{
 			path: 'ResContentList',
 			component: ResContentList,
-		},{
+        },{
 			path: 'resAdd',
 			component: ResAdd,
-		},{
+        },{
 			path: 'resAddContent',
-			component: ResAddContent
-		}]
+			component: ResAddContent,
+        }]
 	},{
 		path: 'login',
 		component: Login
 	}]
 }
+
+function checkLogin(nextState, replace,next) {
+    if(window.localStorage.userInfo){
+        next()
+    }else{
+        replace('/login')//重定向
+        next()
+    }
+}
+
 
 class Routers extends Component {
 	render() {
