@@ -1,7 +1,7 @@
 import { createStore, applyMiddleware } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import createLogger from 'redux-logger';
-import rootReducer from '../reducers.jsx';
+import rootReducer from './../reducers/index.jsx';
 
 let createStoreWithMiddleware;
 // store负责管理所有reducer，module.hot.accept表示支持热更新

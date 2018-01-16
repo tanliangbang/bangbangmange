@@ -1,40 +1,56 @@
 import React, {Component, PropTypes} from 'react';
 import { Router, Route, IndexRoute} from 'react-router' // 路由
 
-//index为入口
-import App from './containers/App.jsx';
-import Login from './containers/Login/index.jsx';
-import Index from './containers/Index/index.jsx';
-import ResContentList from './containers/Res/ResContentList.jsx';
-import ResAdd from './containers/Res/ResAdd.jsx';
-import ResAddContent from './containers/Res/ResAddContent.jsx';
-import Home from './containers/Home/index.jsx';
-
-
-
 export const routes = {
-	component: App,
-	indexRoute: {component: Index},
-	childRoutes: [{
-		component: Index,
+    getComponent(nextState, callback){
+        require.ensure([], (require) => {
+            callback(null, require('./containers/App.jsx').default)
+        }, 'App')
+    },
+    childRoutes: [{
         onEnter:checkLogin,
+        getComponent(nextState, callback){
+            require.ensure([], (require) => {
+                callback(null, require('./containers/Index/index.jsx').default)
+            }, 'Index')
+        },
         childRoutes: [{
             path: '/',
-            component: Home,
+            getComponent(nextState, callback){
+                require.ensure([], (require) => {
+                    callback(null, require('./containers/Home/index.jsx').default)
+                }, 'Home')
+            },
         },{
-			path: 'ResContentList',
-			component: ResContentList,
+            path: 'ResContentList',
+            getComponent(nextState, callback){
+                require.ensure([], (require) => {
+                    callback(null, require('./containers/Res/ResContentList.jsx').default)
+                }, 'ResContentList')
+            }
         },{
-			path: 'resAdd',
-			component: ResAdd,
+            path: 'resAdd',
+            getComponent(nextState, callback){
+                require.ensure([], (require) => {
+                    callback(null, require('./containers/Res/ResAdd.jsx').default)
+                }, 'ResAdd')
+            }
         },{
-			path: 'resAddContent',
-			component: ResAddContent,
+            path: 'resAddContent',
+            getComponent(nextState, callback){
+                require.ensure([], (require) => {
+                    callback(null, require('./containers/Res/ResAddContent.jsx').default)
+                }, 'ResAddContent')
+            }
         }]
-	},{
-		path: 'login',
-		component: Login
-	}]
+    },{
+        path: 'login',
+        getComponent(nextState, callback){
+            require.ensure([], (require) => {
+                callback(null, require('./containers/Login/index.jsx').default)
+            }, 'Login')
+        }
+    }]
 }
 
 function checkLogin(nextState, replace,next) {

@@ -1,4 +1,3 @@
-import merged from 'obj-merged';
 const Tool = {};
 /**
  * 格式化时间
@@ -417,7 +416,7 @@ function binl2b64(binarray)
 
 
 
-export { Tool, merged }
+export { Tool }
 
 
 

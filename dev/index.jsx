@@ -6,7 +6,7 @@ import { Provider } from 'react-redux'
 import thunk from 'redux-thunk' //中间键，diapatch异步实现
 import { browserHistory} from 'react-router' // 路由
 import { syncHistoryWithStore } from 'react-router-redux' //路由使用redux管理
-import configureStore from './store/configureStore';
+import configureStore from './store/configureStore.jsx';
 
 import Routers from './Routers.jsx'
 
@@ -21,11 +21,10 @@ const store = configureStore();
 
 //保持历史同步
 const history = syncHistoryWithStore(browserHistory, store)
-
 //路由
 ReactDOM.render(
-	<Provider store={store}>
-	  <Routers history={history}/>
-	</Provider>, 
-	document.getElementById('App')
+    <Provider store={store}>
+        <Routers history={history}/>
+    </Provider>,
+    document.getElementById('App')
 );

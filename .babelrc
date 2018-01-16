@@ -1,0 +1,11 @@
+{
+  "presets":
+    ["es2015", "stage-2", "react"],
+  "plugins": [
+    "transform-runtime",
+    // 按需加载组件的代码和样式
+    ["babel-plugin-import", {
+        "libraryName": "antd",
+        "style": true
+    }]]
+}

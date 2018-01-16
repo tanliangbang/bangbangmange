@@ -4,16 +4,13 @@ module.exports = function( env ) {
     // 生成环境下webpack使用-p参数开启代码压缩
     // webpack[-dev-server]使用--env dev参数指定编译环境
     var isDev = env == 'dev';
-
     var path = require( 'path' );
     var webpack = require( 'webpack' );
     var CleanWebpackPlugin = require( 'clean-webpack-plugin' );
     var CopyWebpackPlugin = require( 'copy-webpack-plugin' );
     var HtmlWebpackPlugin = require( 'html-webpack-plugin' );
-    var WebpackMd5Hash = require( 'webpack-md5-hash' );
     var BundleAnalyzerPlugin = require( 'webpack-bundle-analyzer' ).BundleAnalyzerPlugin;
     var ExtractTextPlugin = require("extract-text-webpack-plugin");
-
 
     var sourcedir = path.resolve( __dirname, 'dev' );// 源码和资源文件的放置位置
     var outputdir = path.resolve( __dirname, 'bangbangmanage' );// 编译结果的放置位置
@@ -42,10 +39,7 @@ module.exports = function( env ) {
             main: [
                 // 编译新版本js的新api(如Promise)，主要是让IE11能够执行编译后的代码
                 'babel-polyfill',
-                //使用react-hot-loader@3.0.0-beta.6，
-                // 搭配webpack-dev-server --hot命令实现react组件的hot reload
-                isDev ? 'react-hot-loader/patch' : null,
-                path.resolve( sourcedir, 'index_dev.jsx')
+                path.resolve( sourcedir, 'index.jsx'),
             ].filter( hasValue ),
             // 第三方库汇总输出
             vendor: ['react', 'react-dom', 'react-router', 'redux', 'react-redux', 'react-router-redux',
@@ -69,21 +63,7 @@ module.exports = function( env ) {
                 use: [{
                     // 编译新版本js语法为低版本js语法
                     loader: 'babel-loader',
-                    options: {
-                        presets: [
-                            // 编译es2015版本的js
-                            ['babel-preset-es2015'], 'babel-preset-stage-2',
-                            'babel-preset-react'],
-                        plugins: [// 支持热加载react组件
-                            isDev ? 'react-hot-loader/babel' : null,
-                            // 减少重复的编译后的辅助方法
-                            'babel-plugin-transform-runtime',
-                            // 按需加载组件的代码和样式
-                            ['babel-plugin-import', {
-                                libraryName: 'antd',
-                                style: true
-                            }]].filter( hasValue )
-                    }
+
                 }]
             }, {
                 test: /\.css$/,
@@ -95,10 +75,10 @@ module.exports = function( env ) {
             }, {
                 test: /\.less$/,
                 use: ExtractTextPlugin.extract({
-                        fallback: 'style-loader',
-                        //resolve-url-loader may be chained before sass-loader if necessary
-                        use: ['css-loader', 'postcss-loader',
-                            {
+                    fallback: 'style-loader',
+                    //resolve-url-loader may be chained before sass-loader if necessary
+                    use: ['css-loader', 'postcss-loader',
+                        {
                             loader: 'less-loader',
                             options: {
                                 modules: false,
@@ -107,16 +87,13 @@ module.exports = function( env ) {
 
                                 }
                             }}]
-                    })
+                })
             }, {
                 test: /\.scss/,
                 use: ExtractTextPlugin.extract({
                     fallback: 'style-loader',
                     //resolve-url-loader may be chained before sass-loader if necessary
-                    use: [ { loader: 'css-loader', options: { importLoaders: 1 } },
-                        { loader: 'sass-loader', options: { importLoaders: 1 } },
-                        'postcss-loader'
-                        ]
+                    use: [ 'css-loader','sass-loader', 'postcss-loader']
                 })
             }, {
                 test: /\.(jpg|png|gif)$/,
@@ -187,7 +164,7 @@ module.exports = function( env ) {
                 to: 'assets'
             }] ),
             // 修复webpack的chunkhash不以chunk文件实际内容为准的问题
-            new WebpackMd5Hash(),
+            new webpack.HashedModuleIdsPlugin(),
             // 单独打包输出第三方组件，和webpack生成的运行时代码
             new webpack.optimize.CommonsChunkPlugin( {
                 name: ['vendor', 'manifest']
