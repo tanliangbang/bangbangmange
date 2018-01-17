@@ -3,6 +3,7 @@
 * @author : tanliangbang
 * @date : 2017-12-28
 */
+import './../../style/style.scss'
 import './style.scss'
 import React ,{Component} from 'react'
 import Menu from './../Common/Menu.jsx'

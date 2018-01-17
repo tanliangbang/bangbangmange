@@ -1,17 +1,12 @@
-import './theme/style.scss';
 import React from 'react'
 import ReactDOM from 'react-dom';
-import { createStore, applyMiddleware} from 'redux'
 import { Provider } from 'react-redux'
-import thunk from 'redux-thunk' //中间键，diapatch异步实现
 import { browserHistory} from 'react-router' // 路由
 import { syncHistoryWithStore } from 'react-router-redux' //路由使用redux管理
 import configureStore from './store/configureStore.jsx';
 
 import Routers from './Routers.jsx'
 
-//获取合并后的 reducer
-import rootReducer from './reducers/index.jsx'
 
 //注册store
 const store = configureStore();

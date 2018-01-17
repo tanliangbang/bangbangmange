@@ -2,11 +2,6 @@ import React, {Component, PropTypes} from 'react';
 import { Router, Route, IndexRoute} from 'react-router' // 路由
 
 export const routes = {
-    getComponent(nextState, callback){
-        require.ensure([], (require) => {
-            callback(null, require('./containers/App.jsx').default)
-        }, 'App')
-    },
     childRoutes: [{
         onEnter:checkLogin,
         getComponent(nextState, callback){
@@ -21,7 +16,7 @@ export const routes = {
                     callback(null, require('./containers/Home/index.jsx').default)
                 }, 'Home')
             },
-        },{
+           },{
             path: 'ResContentList',
             getComponent(nextState, callback){
                 require.ensure([], (require) => {

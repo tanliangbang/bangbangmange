@@ -175,7 +175,7 @@ module.exports = function( env ) {
             new webpack.HashedModuleIdsPlugin(),
             // 单独打包输出第三方组件，和webpack生成的运行时代码
             new webpack.optimize.CommonsChunkPlugin( {
-                name: ['vendor','antd','manifest']
+                name: ['vendor','antd','manifest'],
             }),
             // 自动填充js、css引用进首页
             new HtmlWebpackPlugin( {

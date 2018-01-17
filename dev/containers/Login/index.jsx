@@ -26,7 +26,6 @@ export class Login extends Component {
                 let password = Tool.hex_md5(values.password)
                 axios.post("/api/users/login",{username:username,password:password}).then(function (res) {
                     let data = res.data;
-                    console.log(data)
                     if(data.data===null||data.statusCode==500||data.data.username!="tanliangbang"){
                         message.error("用户名密码错误")
                     }else{
@@ -61,7 +60,7 @@ export class Login extends Component {
                                     message: '请输入用户名',
                                 }],
                             })(
-                                <Input prefix={<Icon type="user"  style={{fontSize: 20,marginRight:10, color: 'rgba(0,0,0,.25)' }} />} defaultValue=""  size="large"  placeholder="请输入用户名"/>)}
+                                <Input prefix={<Icon type="user"  style={{fontSize: 20,marginRight:10, color: 'rgba(0,0,0,.25)' }} />}   size="large"  placeholder="请输入用户名"/>)}
                         </FormItem>
                     </div>
                     <div>
@@ -72,7 +71,7 @@ export class Login extends Component {
                                     message: '请输入用户名',
                                 }],
                             })(
-                                <Input prefix={<Icon type="lock"  style={{ fontSize: 20,marginRight:10,color: 'rgba(0,0,0,.25)' }}  />} defaultValue="" size="large"  type="password" placeholder="请输入密码"/>)}
+                                <Input prefix={<Icon type="lock"  style={{ fontSize: 20,marginRight:10,color: 'rgba(0,0,0,.25)' }}  />} size="large"  type="password" placeholder="请输入密码"/>)}
                         </FormItem>
                     </div>
                     <div>
