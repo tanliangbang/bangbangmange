@@ -1,5 +1,5 @@
 @charset "UTF-8";
-@import "../style/var.scss";
+@import "/var.scss";
 @import "common";
 @import "./theme";
 
@@ -66,16 +66,5 @@ a{
     color:blue;
 }
 
-.common-title{
-    width:100%;
-    height:50px;
-    box-sizing:border-box;
-    line-height: 50px;
-    background:$main-color;
-    color:#fff;
-    padding-left:10px;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-    font-weight: bold;
-}
+
 

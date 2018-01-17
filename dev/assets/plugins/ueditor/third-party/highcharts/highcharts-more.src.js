@@ -637,7 +637,7 @@ defaultPlotOptions.arearange = merge(defaultPlotOptions.area, {
 	marker: null,
 	threshold: null,
 	tooltip: {
-		pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.low}</b> - <b>{point.high}</b><br/>' 
+		pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.low}</b> - <b>{point.high}</b><br/>'
 	},
 	trackByArea: true,
 	dataLabels: {

@@ -20,7 +20,7 @@ module.exports = function( env ) {
     var hasValue = function( item ) { return item != null; };
     return {
         //context: path.resolve( __dirname ),
-        devtool: 'source-map',
+        //devtool: 'source-map',
         devServer: {
             host: '0.0.0.0',
             historyApiFallback: true,
@@ -38,15 +38,23 @@ module.exports = function( env ) {
         entry: {
             main: [
                 // 编译新版本js的新api(如Promise)，主要是让IE11能够执行编译后的代码
-                'babel-polyfill',
                 path.resolve( sourcedir, 'index.jsx'),
             ].filter( hasValue ),
             // 第三方库汇总输出
-            vendor: ['react', 'react-dom', 'react-router', 'redux', 'react-redux', 'react-router-redux',
-                // 只含antd的js部分
-                /*'antd',
-                // 各控件还需引入各自的样式文件
-                'antd/lib/style/index.less'*/]
+            vendor: ['react', 'react-dom', 'react-router', 'redux', 'react-redux', 'react-router-redux'],
+            antd:[
+                "antd/lib/table","antd/lib/table/style",
+                "antd/lib/form","antd/lib/form/style",
+                "antd/lib/divider","antd/lib/divider/style",
+                "antd/lib/icon","antd/lib/icon/style",
+                "antd/lib/button","antd/lib/button/style",
+                "antd/lib/checkbox","antd/lib/checkbox/style",
+                "antd/lib/switch","antd/lib/switch/style",
+                "antd/lib/select","antd/lib/select/style",
+                "antd/lib/message","antd/lib/message/style",
+                "antd/lib/modal","antd/lib/modal/style",
+                "antd/lib/upload","antd/lib/upload/style",
+            ]
         },
         output: {
             path: outputdir,
@@ -167,7 +175,7 @@ module.exports = function( env ) {
             new webpack.HashedModuleIdsPlugin(),
             // 单独打包输出第三方组件，和webpack生成的运行时代码
             new webpack.optimize.CommonsChunkPlugin( {
-                name: ['vendor', 'manifest']
+                name: ['vendor','antd','manifest']
             }),
             // 自动填充js、css引用进首页
             new HtmlWebpackPlugin( {
@@ -194,13 +202,13 @@ module.exports = function( env ) {
             // 排除特定库
             isDev ? null : new webpack.IgnorePlugin( /.*/, /react-hot-loader$/ ),
             // 输出报告，查看第三方库的大小
-            /*isDev ? null : new BundleAnalyzerPlugin(
+            isDev ? null : new BundleAnalyzerPlugin(
                 {
                     analyzerMode: 'static',
                     reportFilename: 'report.html',
                     openAnalyzer: true,
                     generateStatsFile: false
-                })*/
+                })
         ].filter( hasValue )
     }
 };

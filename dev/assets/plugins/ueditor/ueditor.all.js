@@ -2978,7 +2978,7 @@ var domUtils = dom.domUtils = {
      * @desc
      * UE.dom.domUtils.mergeChild(node,tagName) //tagName要合并的子节点的标签
      * @example
-     * <p><span style="font-size:12px;">xx<span style="font-size:12px;">aa</span>xx</span></p>
+     * <p><span style="font-size:12px;">xx<span style="font-size:12px;">style</span>xx</span></p>
      * ==> UE.dom.domUtils.mergeChild(node,'span')
      * <p><span style="font-size:12px;">xxaaxx</span></p>
      */

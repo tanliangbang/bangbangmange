@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react'
-import { Modal, Button } from 'antd';
+import { Modal } from 'antd';
 
 
 export class Mask extends React.Component {

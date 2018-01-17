@@ -253,7 +253,7 @@ export class ResContentList extends React.Component {
                     <Button type="primary" loading={delLoading} onClick={this.showMask.bind(this,this.delCurrRes.bind(this))}
                              htmlType="button" >删 除 资 源</Button>
                 </div>
-                <div className="common-title">{resDetail.cname+"("+resDetail.name+")列表"}</div>
+                <div className="my-common-title">{resDetail.cname+"("+resDetail.name+")列表"}</div>
                 <Table dataSource={dataSource} columns={columns} loading={loading}  pagination={pagination}  />
                 <Mask callback={this.state.maskCallback} ref="mask"/>
             </div>

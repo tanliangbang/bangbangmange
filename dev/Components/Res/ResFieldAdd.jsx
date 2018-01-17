@@ -1,9 +1,6 @@
 import './style.scss'
 import React, { Component, PropTypes } from 'react'
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { Modal, Button, Form, Input,Switch,Select, Icon, AutoComplete} from 'antd';
-import { Tool } from '../../utils/Tool.jsx';
+import { Modal, Button, Form, Input,Switch,Select} from 'antd';
 const FormItem = Form.Item;
 const Option = Select.Option;
 

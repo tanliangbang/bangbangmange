@@ -1,4 +1,4 @@
-import './style/style.scss';
+import './theme/style.scss';
 import React from 'react'
 import ReactDOM from 'react-dom';
 import { createStore, applyMiddleware} from 'redux'

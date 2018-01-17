@@ -5,11 +5,7 @@
 */
 import './style.scss'
 import React ,{Component} from 'react'
-import { Link } from 'react-router'
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
 import Menu from './../Common/Menu.jsx'
-import Footer from './../Common/Footer.jsx'
 import LeftMenu from './../Common/LeftMenu.jsx'
 
 class Index extends Component {

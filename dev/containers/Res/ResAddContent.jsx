@@ -2,8 +2,7 @@ import './style.scss'
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Table,Form, Input,Divider, Icon, Button,
-    message,DatePicker,TimePicker,Switch,Select,Checkbox} from 'antd';
+import { Form, Input, Button,message,DatePicker,TimePicker,Switch,Select,Checkbox} from 'antd';
 import * as resAction from '../../actions/res.jsx';
 import { Tool } from '../../utils/Tool.jsx';
 import UploadImg from '../../Components/Common/UploadImg.jsx';
@@ -469,7 +468,7 @@ export class ResAddContent extends React.Component {
         let _this = this;
         return (
             <div className="res-add-content">
-                <div className="common-title">添加资源</div>
+                <div className="my-common-title">添加资源</div>
                 <form className="resAddContentForm" onSubmit={this.handleSubmit.bind(this)}>
                     {
                         fieldList.map(function (item,key) {
