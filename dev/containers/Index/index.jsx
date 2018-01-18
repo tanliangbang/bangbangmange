@@ -14,6 +14,10 @@ class Index extends Component {
 		super(props);
 	}
 
+    componentDidMount(){
+		window.document.getElementById("app-loading").style.display="none";
+	}
+
   render() {
 			return (
 				<div className="index">
@@ -26,8 +30,6 @@ class Index extends Component {
 							{this.props.children}
 						</article>
 					</section>
-
-
 				</div>
 			);
 

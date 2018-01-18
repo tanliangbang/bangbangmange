@@ -19,8 +19,7 @@ module.exports = function( env ) {
 
     var hasValue = function( item ) { return item != null; };
     return {
-        //context: path.resolve( __dirname ),
-        //devtool: 'source-map',
+        //devtool: 'cheap-module-eval-source-map',
         devServer: {
             host: '0.0.0.0',
             historyApiFallback: true,
@@ -38,23 +37,26 @@ module.exports = function( env ) {
         entry: {
             main: [
                 // 编译新版本js的新api(如Promise)，主要是让IE11能够执行编译后的代码
-                path.resolve( sourcedir, 'index.jsx'),
+                path.resolve( sourcedir, isDev?'index_dev.jsx':'index.jsx'),
             ].filter( hasValue ),
             // 第三方库汇总输出
-            vendor: ['react', 'react-dom', 'react-router', 'redux', 'react-redux', 'react-router-redux'],
+
             antd:[
+                "antd/lib/button","antd/lib/button/style",
+                "antd/lib/checkbox","antd/lib/checkbox/style",
                 "antd/lib/table","antd/lib/table/style",
                 "antd/lib/form","antd/lib/form/style",
                 "antd/lib/divider","antd/lib/divider/style",
                 "antd/lib/icon","antd/lib/icon/style",
-                "antd/lib/button","antd/lib/button/style",
-                "antd/lib/checkbox","antd/lib/checkbox/style",
                 "antd/lib/switch","antd/lib/switch/style",
                 "antd/lib/select","antd/lib/select/style",
                 "antd/lib/message","antd/lib/message/style",
                 "antd/lib/modal","antd/lib/modal/style",
                 "antd/lib/upload","antd/lib/upload/style",
-            ]
+            ].filter( hasValue ),
+            vendor: ['react', 'react-dom', 'react-router', 'redux', 'react-redux', 'react-router-redux'].filter( hasValue ),
+
+
         },
         output: {
             path: outputdir,
@@ -165,6 +167,7 @@ module.exports = function( env ) {
         plugins: [
             // momentjs包含大量本地化代码，需筛选
             new webpack.ContextReplacementPlugin( /moment[\/\\]locale$/, /en-ca|zh-cn/ ),
+            //根据模块调用次数，给模块分配ids，常被调用的ids分配更短的id，使得ids可预测，降低文件大小，该模块推荐使用
             new webpack.optimize.OccurrenceOrderPlugin( true ),
             // 复制无需编译的文件至输出目录
             new CopyWebpackPlugin( [{
@@ -175,8 +178,11 @@ module.exports = function( env ) {
             new webpack.HashedModuleIdsPlugin(),
             // 单独打包输出第三方组件，和webpack生成的运行时代码
             new webpack.optimize.CommonsChunkPlugin( {
-                name: ['vendor','antd','manifest'],
+                name: ['antd','vendor','manifest']
             }),
+
+
+
             // 自动填充js、css引用进首页
             new HtmlWebpackPlugin( {
                 title: 'wzp react',
@@ -199,16 +205,14 @@ module.exports = function( env ) {
             isDev ? new webpack.NamedModulesPlugin() : null,
             // 先清理输出目录
             isDev ? null : new CleanWebpackPlugin( [outputdir] ),
-            // 排除特定库
-            isDev ? null : new webpack.IgnorePlugin( /.*/, /react-hot-loader$/ ),
             // 输出报告，查看第三方库的大小
-            isDev ? null : new BundleAnalyzerPlugin(
+           /* isDev ? null : new BundleAnalyzerPlugin(
                 {
                     analyzerMode: 'static',
                     reportFilename: 'report.html',
                     openAnalyzer: true,
                     generateStatsFile: false
-                })
+                })*/
         ].filter( hasValue )
     }
 };
