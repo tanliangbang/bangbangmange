@@ -53,6 +53,7 @@ export class ResAddContent extends React.Component {
     }
 
     componentWillMount(){
+        this.props.hideLoading();
         let id = this.state.id;
         let resContentId = this.state.resContentId;
         let name = this.state.type
@@ -337,7 +338,9 @@ export class ResAddContent extends React.Component {
             let _this = this;
             if(imgUrl){
                 setTimeout(function(){
-                   _this.refs[item["my-title"]+"-imgUrl"].setImgUrl(imgUrl);
+                    if(_this.refs[item["my-title"]+"-imgUrl"]){
+                        _this.refs[item["my-title"]+"-imgUrl"].setImgUrl(imgUrl);
+                    }
                })
             }
             return (

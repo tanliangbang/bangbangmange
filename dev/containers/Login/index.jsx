@@ -16,7 +16,9 @@ export class Login extends Component {
         super(props);
 
     }
-
+    componentDidMount(){
+        window.document.getElementById("app-loading").style.display="none";
+    }
 
     handleSubmit(e){
         e.preventDefault();

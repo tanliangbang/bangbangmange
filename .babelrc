@@ -1,6 +1,9 @@
 {
   "presets":
     ["es2015", "stage-2", "react"],
+  "ignore": [
+    "./dev/assets/plugins/ueditor"
+  ],
   "plugins": [
     "transform-runtime",
     // 按需加载组件的代码和样式

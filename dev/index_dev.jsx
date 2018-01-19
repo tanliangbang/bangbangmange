@@ -1,6 +1,6 @@
 import './style/style.scss';
 import React from 'react'
-import ReactDOM from 'react-dom'
+import { render } from 'react-dom'
 import { createStore, applyMiddleware} from 'redux'
 import { Provider } from 'react-redux'
 import thunk from 'redux-thunk' //中间键，diapatch异步实现
@@ -12,32 +12,34 @@ import { createDevTools } from 'redux-devtools'
 import LogMonitor from 'redux-devtools-log-monitor'
 import DockMonitor from 'redux-devtools-dock-monitor'
 const DevTools = createDevTools(
-  //redux在线调试工具的快捷键控制 toggleVisibilityKey：是否显示 changePositionKey：显示位置
-  <DockMonitor toggleVisibilityKey="ctrl-h" changePositionKey="ctrl-q">
-    <LogMonitor theme="tomorrow" preserveScrollTop={false} bottom="0" />
-  </DockMonitor>
-)  
+    //redux在线调试工具的快捷键控制 toggleVisibilityKey：是否显示 changePositionKey：显示位置
+    <DockMonitor toggleVisibilityKey="ctrl-h" changePositionKey="ctrl-q">
+        <LogMonitor theme="tomorrow" preserveScrollTop={false} bottom="0" />
+    </DockMonitor>
+)
 
 import Routers from './Routers.jsx'
+
+//获取合并后的 reducer
 import rootReducer from './reducers/index.jsx'
 
 //注册store
 const store = createStore(
-  rootReducer, 
-  DevTools.instrument(), //注册调试工具
-  applyMiddleware(thunk)
+    rootReducer,
+    DevTools.instrument(), //注册调试工具
+    applyMiddleware(thunk)
 )
 
 //保持历史同步
 const history = syncHistoryWithStore(browserHistory, store)
 
 //路由
-ReactDOM.render(
-	<Provider store={store}>
-	  <div>
-	   <Routers history={history} />
-	   {/*<DevTools />*/}
-    </div>
-	</Provider>, 
-  document.getElementById('App')
+render(
+    <Provider store={store}>
+        <div>
+            <Routers history={history} />
+            {<DevTools />}
+        </div>
+    </Provider>,
+    document.getElementById('App')
 );

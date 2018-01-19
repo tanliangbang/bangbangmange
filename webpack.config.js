@@ -18,6 +18,7 @@ module.exports = function( env ) {
     // antd的图标字体文件的实际访问路径，利用less-load的变量替换功能
 
     var hasValue = function( item ) { return item != null; };
+    process.noDeprecation = true;   //解决loader-utils模块引起的错误
     return {
         //devtool: 'cheap-module-eval-source-map',
         devServer: {
@@ -34,13 +35,12 @@ module.exports = function( env ) {
             // 让less-loader等插件能找到以~相对定位的资源
             modules: [sourcedir, 'node_modules']
         },
-        entry: {
-            main: [
-                // 编译新版本js的新api(如Promise)，主要是让IE11能够执行编译后的代码
-                path.resolve( sourcedir, isDev?'index_dev.jsx':'index.jsx'),
-            ].filter( hasValue ),
-            // 第三方库汇总输出
-
+        entry:
+            isDev ? {
+               main:path.resolve(sourcedir,'index_dev.jsx'),
+            }:
+            {
+             main:path.resolve(sourcedir,'index.jsx'),
             antd:[
                 "antd/lib/button","antd/lib/button/style",
                 "antd/lib/checkbox","antd/lib/checkbox/style",
@@ -94,7 +94,6 @@ module.exports = function( env ) {
                                 modules: false,
                                 modifyVars: {
                                     "primary-color": "#1bbc9b"
-
                                 }
                             }}]
                 })
@@ -166,23 +165,20 @@ module.exports = function( env ) {
         },
         plugins: [
             // momentjs包含大量本地化代码，需筛选
-            new webpack.ContextReplacementPlugin( /moment[\/\\]locale$/, /en-ca|zh-cn/ ),
+            isDev ? null : new webpack.ContextReplacementPlugin( /moment[\/\\]locale$/, /en-ca|zh-cn/ ),
             //根据模块调用次数，给模块分配ids，常被调用的ids分配更短的id，使得ids可预测，降低文件大小，该模块推荐使用
-            new webpack.optimize.OccurrenceOrderPlugin( true ),
+            isDev ? null : new webpack.optimize.OccurrenceOrderPlugin( true ),
             // 复制无需编译的文件至输出目录
-            new CopyWebpackPlugin( [{
+             new CopyWebpackPlugin( [{
                 from: path.resolve( sourcedir, 'assets' ),
                 to: 'assets'
             }] ),
             // 修复webpack的chunkhash不以chunk文件实际内容为准的问题
-            new webpack.HashedModuleIdsPlugin(),
+            isDev ? null : new webpack.HashedModuleIdsPlugin(),
             // 单独打包输出第三方组件，和webpack生成的运行时代码
-            new webpack.optimize.CommonsChunkPlugin( {
-                name: ['antd','vendor','manifest']
-            }),
-
-
-
+             isDev ? null :  new webpack.optimize.CommonsChunkPlugin( {
+                   name: ['antd','vendor','manifest']
+              }),
             // 自动填充js、css引用进首页
             new HtmlWebpackPlugin( {
                 title: 'wzp react',
@@ -202,17 +198,17 @@ module.exports = function( env ) {
                 }
             }),
             // print more readable module names on HMR updates
-            isDev ? new webpack.NamedModulesPlugin() : null,
+            isDev ? null : new webpack.NamedModulesPlugin() ,
             // 先清理输出目录
             isDev ? null : new CleanWebpackPlugin( [outputdir] ),
             // 输出报告，查看第三方库的大小
-           /* isDev ? null : new BundleAnalyzerPlugin(
+            isDev ? null : new BundleAnalyzerPlugin(
                 {
                     analyzerMode: 'static',
                     reportFilename: 'report.html',
                     openAnalyzer: true,
                     generateStatsFile: false
-                })*/
+                })
         ].filter( hasValue )
     }
 };

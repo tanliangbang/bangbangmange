@@ -2,7 +2,7 @@ import './style.scss'
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { browserHistory } from 'react-router';
+import { browserHistory,Link } from 'react-router';
 import { Table, Icon, Divider,Button,message } from 'antd';
 import * as resAction from '../../actions/res.jsx';
 import { Tool } from '../../utils/Tool.jsx';
@@ -18,6 +18,7 @@ export class ResContentList extends React.Component {
             total: 0,
             defaultCurrent: 1,
             pageSize: 5,
+            loading:false,
             showSizeChanger: true,
             onShowSizeChange: (current, pageSize) => {
                 _this.getDate(current, pageSize);
@@ -39,6 +40,7 @@ export class ResContentList extends React.Component {
             id:id,
             maskCallback:null
         }
+        this.props.hideLoading();
     }
 
     componentWillReceiveProps(nextProps){
@@ -142,7 +144,13 @@ export class ResContentList extends React.Component {
     toAddResContent(){
         let id = this.state.id;
         let type = this.state.type;
-        browserHistory.push("resAddContent?id="+id+"&type="+type)
+        browserHistory.push("resAddContent?id="+id+"&type="+type);
+        this.props.showLoading();
+    }
+
+    editResContent(resId,id,type){
+        this.props.showLoading();
+        browserHistory.push("/resAddContent?resContentId="+id+"&id="+resId+"&type="+type);
     }
 
 
@@ -175,7 +183,7 @@ export class ResContentList extends React.Component {
              className:"operaIcon",
              render: (text, record,index) => (
                  <span>
-                  <a href={"resAddContent?resContentId="+record.id+"&id="+resId+"&type="+resName} > <Icon type="edit" /></a>
+                  <a onClick={this.editResContent.bind(this,resId,record.id,resName)}> <Icon type="edit" /></a>
                   <Divider type="vertical" />
                   <a onClick={this.showMask.bind(this,this.delCurrResContent.bind(this,index,record.id))}><Icon type="delete" /></a>
                 </span>
@@ -246,16 +254,16 @@ export class ResContentList extends React.Component {
         let dataSource = this.dealResContentList(resContentList);
         return (
             <div className="resContentList">
-                <div>
-                    <Button type="primary"  onClick={this.toAddResContent.bind(this)}  htmlType="button" >添 加 数 据</Button>
-                    <Button type="primary"  onClick={this.editRes.bind(this)}
-                            htmlType="button" >修 改 资 源</Button>
-                    <Button type="primary" loading={delLoading} onClick={this.showMask.bind(this,this.delCurrRes.bind(this))}
-                             htmlType="button" >删 除 资 源</Button>
-                </div>
-                <div className="my-common-title">{resDetail.cname+"("+resDetail.name+")列表"}</div>
-                <Table dataSource={dataSource} columns={columns} loading={loading}  pagination={pagination}  />
-                <Mask callback={this.state.maskCallback} ref="mask"/>
+                    <div>
+                        <Button type="primary"  onClick={this.toAddResContent.bind(this)}  htmlType="button" >添 加 数 据</Button>
+                        <Button type="primary"  onClick={this.editRes.bind(this)}
+                                htmlType="button" >修 改 资 源</Button>
+                        <Button type="primary" loading={delLoading} onClick={this.showMask.bind(this,this.delCurrRes.bind(this))}
+                                 htmlType="button" >删 除 资 源</Button>
+                    </div>
+                    <div className="my-common-title">{resDetail.cname+"("+resDetail.name+")列表"}</div>
+                    <Table dataSource={dataSource} columns={columns} loading={loading}   pagination={pagination}  />
+                    <Mask callback={this.state.maskCallback} ref="mask"/>
             </div>
         );
     }

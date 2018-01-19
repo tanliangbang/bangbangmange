@@ -35,7 +35,6 @@ export class ResAdd extends React.Component {
             }).then(function(res){
                 _this.props.form.setFieldsValue({name:res.name,cname:res.cname})
                let dataSource = _this.dealResFieldList(res.type_specification)
-                console.log(res)
                 _this.setState({
                     dataSource:dataSource,
                     oldTableName:res.name
@@ -218,7 +217,7 @@ export class ResAdd extends React.Component {
         return (
             <div className="resAdd">
               <Form ref="form" onSubmit={this.handleSubmit.bind(this)} >
-                <div className="common-title">添加资源</div>
+                <div className="my-common-title">添加资源</div>
                     <div className="resTitle">
                             <FormItem {...formItemLayout} label="资源表名">
                                 {getFieldDecorator('name', {
@@ -244,7 +243,7 @@ export class ResAdd extends React.Component {
                     </div>
 
                 <div className="res-field">
-                     <div className="common-title mgt-20">字段  <Icon onClick={this.showAddResField.bind(this)} className="add-field-btn" type="plus-square" /></div>
+                     <div className="my-common-title mgt-20">字段  <Icon onClick={this.showAddResField.bind(this)} className="add-field-btn" type="plus-square" /></div>
                     <Table dataSource={dataSource} columns={columns} pagination={false}/>
                 </div>
                  <ResFieldAdd changeField={this.changeField.bind(this)} addFieldFn={this.addFieldFn.bind(this)} wrappedComponentRef={(inst) => this.formRef = inst} />
