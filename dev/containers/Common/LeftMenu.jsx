@@ -49,12 +49,17 @@ export class leftMenu extends Component {
                <div className="leftMenu">
                         <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline"  openKeys={this.state.openKeys}
                               onOpenChange={this.onOpenChange.bind(this)} >
-                            <SubMenu key="sub1" title={<span><Icon type="database" /><span>资源管理</span></span>}>
+                            <SubMenu key="sub1" title={<span><Icon type="home" /><span>首页</span></span>}>
+                                <Menu.Item key="1">
+                                    <Link  to='/'> 首页</Link>
+                                </Menu.Item>
+                            </SubMenu>
+                            <SubMenu key="sub3" title={<span><Icon type="database" /><span>资源管理</span></span>}>
                                 <SubMenu key="sub2" title={<span>资源列表</span>}>
                                     {
                                         res.map((item, k) => {
                                             return (
-                                                <Menu.Item key={k}> <Link  to={{ pathname: '/resContentList', query: { type: item.name,id:item.id } }}>{item.cname}</Link></Menu.Item>
+                                                <Menu.Item key={k+2}> <Link  to={{ pathname: '/resContentList', query: { type: item.name,id:item.id } }}>{item.cname}</Link></Menu.Item>
                                             )
                                         })
                                     }
@@ -62,10 +67,11 @@ export class leftMenu extends Component {
                                 </SubMenu>
                                 <Menu.Item key={res.length+1}><Link  to={{ pathname: '/resAdd'}}>添加资源</Link></Menu.Item>
                             </SubMenu>
-                            <SubMenu key="sub3" title={<span><Icon type="profile"  /><span>文章管理</span></span>}>
-                                <Menu.Item key={res.length+2}>文章列表</Menu.Item>
-                                <Menu.Item key={res.length+3}>添加文章</Menu.Item>
+                            <SubMenu key="sub4" title={<span><Icon type="profile"  /><span>文章管理</span></span>}>
+                                <Menu.Item key={res.length+3}>文章列表</Menu.Item>
+                                <Menu.Item key={res.length+4}>添加文章</Menu.Item>
                             </SubMenu>
+
                         </Menu>
                </div>
         );

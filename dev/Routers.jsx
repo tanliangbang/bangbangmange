@@ -45,6 +45,13 @@ export const routes = {
                 callback(null, require('./containers/Login/index.jsx').default)
             }, 'Login')
         }
+    },{
+        path: '*',
+        getComponent(nextState, callback){
+            require.ensure([], (require) => {
+                callback(null, require('./containers/Error/Error.jsx').default)
+            }, 'Error')
+        }
     }]
 }
 

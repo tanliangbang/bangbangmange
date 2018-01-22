@@ -8112,7 +8112,7 @@
                 console && console.error(msg);
                 //me.fireEvent('showMessage', {
                 //    'title': msg,
-                //    'type': 'error'
+                //    'type': 'Error'
                 //});
             }
         };

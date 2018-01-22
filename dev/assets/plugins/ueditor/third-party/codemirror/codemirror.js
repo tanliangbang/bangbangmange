@@ -118,7 +118,7 @@ var CodeMirror = (function() {
         connect(input, "paste", fastPoll);
         connect(input, "cut", operation(function(){replaceSelection("");}));
 
-        // IE throws unspecified error in certain cases, when
+        // IE throws unspecified Error in certain cases, when
         // trying to access activeElement before onload
         var hasFocus; try { hasFocus = (targetDocument.activeElement == input); } catch(e) { }
         if (hasFocus) setTimeout(onFocus, 20);
@@ -846,7 +846,7 @@ var CodeMirror = (function() {
             mover.style.top = (displayOffset * th) + "px";
             code.style.height = (doc.height * th + 2 * paddingTop()) + "px";
 
-            // Since this is all rather error prone, it is honoured with the
+            // Since this is all rather Error prone, it is honoured with the
             // only assertion in the whole file.
             if (lineDiv.childNodes.length != showingTo - showingFrom)
                 throw new Error("BAD PATCH! " + JSON.stringify(intact) + " size=" + (showingTo - showingFrom) +
@@ -1656,7 +1656,7 @@ var CodeMirror = (function() {
 
         // Operations are used to wrap changes in such a way that each
         // change won't have to update the cursor and display (which would
-        // be awkward, slow, and error-prone), but instead updates are
+        // be awkward, slow, and Error-prone), but instead updates are
         // batched and then all combined and executed at once.
         function startOperation() {
             updateInput = userSelChange = textChanged = null;

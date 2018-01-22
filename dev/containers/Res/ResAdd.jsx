@@ -33,7 +33,7 @@ export class ResAdd extends React.Component {
             new Promise(function(resolve,reject){
                 _this.props.actions.getResDetail(currId,resolve,reject)
             }).then(function(res){
-                _this.props.form.setFieldsValue({name:res.name,cname:res.cname})
+                _this.props.form.setFieldsValue({name:res.name,cname:res.cname,res_type:res.res_type})
                let dataSource = _this.dealResFieldList(res.type_specification)
                 _this.setState({
                     dataSource:dataSource,
@@ -235,6 +235,16 @@ export class ResAdd extends React.Component {
                                     rules: [{
                                         required: true,
                                         message: '请输入资源名称'
+                                    }],
+                                })(
+                                    <Input placeholder="请输入资源名称" />
+                                )}
+                            </FormItem>
+
+                            <FormItem {...formItemLayout} label="资源类型">
+                                {getFieldDecorator('res_type', {
+                                    rules: [{
+                                        message: '请输入资源类型(可选)'
                                     }],
                                 })(
                                     <Input placeholder="请输入资源名称" />

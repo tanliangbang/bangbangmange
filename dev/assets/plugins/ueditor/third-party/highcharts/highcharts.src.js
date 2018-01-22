@@ -872,7 +872,7 @@ function stableSort(arr, sortFunction) {
 
 /**
  * Non-recursive method to find the lowest member of an array. Math.min raises a maximum
- * call stack size exceeded error in Chrome when trying to apply more than 150.000 points. This
+ * call stack size exceeded Error in Chrome when trying to apply more than 150.000 points. This
  * method is slightly slower, but safe.
  */
 function arrayMin(data) {
@@ -889,7 +889,7 @@ function arrayMin(data) {
 
 /**
  * Non-recursive method to find the lowest member of an array. Math.min raises a maximum
- * call stack size exceeded error in Chrome when trying to apply more than 150.000 points. This
+ * call stack size exceeded Error in Chrome when trying to apply more than 150.000 points. This
  * method is slightly slower, but safe.
  */
 function arrayMax(data) {
@@ -944,10 +944,10 @@ function discardElement(element) {
 }
 
 /**
- * Provide error messages for debugging, with links to online explanation 
+ * Provide Error messages for debugging, with links to online explanation
  */
 function error(code, stop) {
-	var msg = 'Highcharts error #' + code + ': www.highcharts.com/errors/' + code;
+	var msg = 'Highcharts Error #' + code + ': www.highcharts.com/errors/' + code;
 	if (stop) {
 		throw msg;
 	} else if (win.console) {
@@ -11343,7 +11343,7 @@ Chart.prototype = {
 			chart.renderTo = renderTo = doc.getElementById(renderTo);
 		}
 		
-		// Display an error if the renderTo is wrong
+		// Display an Error if the renderTo is wrong
 		if (!renderTo) {
 			error(13, true);
 		}

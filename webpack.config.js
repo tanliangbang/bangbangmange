@@ -53,8 +53,9 @@ module.exports = function( env ) {
                 "antd/lib/message","antd/lib/message/style",
                 "antd/lib/modal","antd/lib/modal/style",
                 "antd/lib/upload","antd/lib/upload/style",
+                sourcedir+"/style/index.scss",
             ].filter( hasValue ),
-            vendor: ['react', 'react-dom', 'react-router', 'redux', 'react-redux', 'react-router-redux'].filter( hasValue ),
+                vendor: ['react', 'react-dom', 'react-router', 'redux', 'react-redux', 'react-router-redux'].filter( hasValue ),
 
 
         },

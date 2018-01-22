@@ -372,7 +372,7 @@ vjs.cleanUpEvents = function(elem, type) {
   if (data.handlers[type].length === 0) {
     delete data.handlers[type];
     // data.handlers[type] = null;
-    // Setting to null was causing an error with data.handlers
+    // Setting to null was causing an Error with data.handlers
 
     // Remove the meta-handler from the element
     if (document.removeEventListener) {
@@ -2305,7 +2305,7 @@ vjs.Slider.prototype.onMouseUp = function() {
 
 vjs.Slider.prototype.update = function(){
   // In VolumeBar init we have a setTimeout for update that pops and update to the end of the
-  // execution stack. The player is destroyed before then update will cause an error
+  // execution stack. The player is destroyed before then update will cause an Error
   if (!this.el_) return;
 
   // If scrubbing, we could use a cached value to make the handle keep up with the user's mouse.
@@ -3195,7 +3195,7 @@ vjs.Player.prototype.onFullscreenChange = function() {
 };
 
 /**
- * Fired when there is an error in playback
+ * Fired when there is an Error in playback
  * @event error
  */
 vjs.Player.prototype.onError = function(e) {
@@ -5049,7 +5049,7 @@ vjs.media = {};
  * List of default API methods for any MediaTechController
  * @type {String}
  */
-vjs.media.ApiMethods = 'play,pause,paused,currentTime,setCurrentTime,duration,buffered,volume,setVolume,muted,setMuted,width,height,supportsFullScreen,enterFullScreen,src,load,currentSrc,preload,setPreload,autoplay,setAutoplay,loop,setLoop,error,networkState,readyState,seeking,initialTime,startOffsetTime,played,seekable,ended,videoTracks,audioTracks,videoWidth,videoHeight,textTracks,defaultPlaybackRate,playbackRate,mediaGroup,controller,controls,defaultMuted'.split(',');
+vjs.media.ApiMethods = 'play,pause,paused,currentTime,setCurrentTime,duration,buffered,volume,setVolume,muted,setMuted,width,height,supportsFullScreen,enterFullScreen,src,load,currentSrc,preload,setPreload,autoplay,setAutoplay,loop,setLoop,Error,networkState,readyState,seeking,initialTime,startOffsetTime,played,seekable,ended,videoTracks,audioTracks,videoWidth,videoHeight,textTracks,defaultPlaybackRate,playbackRate,mediaGroup,controller,controls,defaultMuted'.split(',');
 // Create placeholder methods for each that warn when a method isn't supported by the current playback technology
 
 function createMethod(methodName){
@@ -5302,7 +5302,7 @@ vjs.Html5.isSupported = function(){
 };
 
 vjs.Html5.canPlaySource = function(srcObj){
-  // IE9 on Windows 7 without MediaPlayer throws an error here
+  // IE9 on Windows 7 without MediaPlayer throws an Error here
   // https://github.com/videojs/video.js/issues/519
   try {
     return !!vjs.TEST_VID.canPlayType(srcObj.type);
@@ -5321,7 +5321,7 @@ vjs.Html5.canControlVolume = function(){
 };
 
 // List of all HTML5 events (various uses).
-vjs.Html5.Events = 'loadstart,suspend,abort,error,emptied,stalled,loadedmetadata,loadeddata,canplay,canplaythrough,playing,waiting,seeking,seeked,ended,durationchange,timeupdate,progress,play,pause,ratechange,volumechange'.split(',');
+vjs.Html5.Events = 'loadstart,suspend,abort,Error,emptied,stalled,loadedmetadata,loadeddata,canplay,canplaythrough,playing,waiting,seeking,seeked,ended,durationchange,timeupdate,progress,play,pause,ratechange,volumechange'.split(',');
 
 vjs.Html5.disposeMediaElement = function(el){
   if (!el) { return; }
@@ -5453,15 +5453,15 @@ vjs.Flash = vjs.MediaTechController.extend({
     // Loading the flash plugin into a dynamically generated iFrame gets around most of these issues.
     // Issues that remain include hiding the element and requestFullScreen in Firefox specifically
 
-    // There's on particularly annoying issue with this method which is that Firefox throws a security error on an offsite Flash object loaded into a dynamically created iFrame.
+    // There's on particularly annoying issue with this method which is that Firefox throws a security Error on an offsite Flash object loaded into a dynamically created iFrame.
     // Even though the iframe was inserted into a page on the web, Firefox + Flash considers it a local app trying to access an internet file.
     // I tried mulitple ways of setting the iframe src attribute but couldn't find a src that worked well. Tried a real/fake source, in/out of domain.
-    // Also tried a method from stackoverflow that caused a security error in all browsers. http://stackoverflow.com/questions/2486901/how-to-set-document-domain-for-a-dynamically-generated-iframe
+    // Also tried a method from stackoverflow that caused a security Error in all browsers. http://stackoverflow.com/questions/2486901/how-to-set-document-domain-for-a-dynamically-generated-iframe
     // In the end the solution I found to work was setting the iframe window.location.href right before doing a document.write of the Flash object.
     // The only downside of this it seems to trigger another http request to the original page (no matter what's put in the href). Not sure why that is.
 
     // NOTE (2012-01-29): Cannot get Firefox to load the remote hosted SWF into a dynamically created iFrame
-    // Firefox 9 throws a security error, unleess you call location.href right before doc.write.
+    // Firefox 9 throws a security Error, unleess you call location.href right before doc.write.
     //    Not sure why that even works, but it causes the browser to look like it's continuously trying to load the page.
     // Firefox 3.6 keeps calling the iframe onload function anytime I write to it, causing an endless loop.
 
@@ -5486,14 +5486,14 @@ vjs.Flash = vjs.MediaTechController.extend({
       // Tried multiple methods to get this to work in all browsers
 
       // Tried embedding the flash object in the page first, and then adding a place holder to the iframe, then replacing the placeholder with the page object.
-      // The goal here was to try to load the swf URL in the parent page first and hope that got around the firefox security error
+      // The goal here was to try to load the swf URL in the parent page first and hope that got around the firefox security Error
       // var newObj = vjs.Flash.embed(options['swf'], placeHolder, flashVars, params, attributes);
       // (in onload)
       //  var temp = vjs.createEl('a', { id:'asdf', innerHTML: 'asdf' } );
       //  iDoc.body.appendChild(temp);
 
       // Tried embedding the flash object through javascript in the iframe source.
-      // This works in webkit but still triggers the firefox security error
+      // This works in webkit but still triggers the firefox security Error
       // iFrm.src = 'javascript: document.write('"+vjs.Flash.getEmbedCode(options['swf'], flashVars, params, attributes)+"');";
 
       // Tried an actual local iframe just to make sure that works, but it kills the easiness of the CDN version if you require the user to host an iframe
@@ -5508,7 +5508,7 @@ vjs.Flash = vjs.MediaTechController.extend({
 
         // The one working method I found was to use the iframe's document.write() to create the swf object
         // This got around the security issue in all browsers except firefox.
-        // I did find a hack where if I call the iframe's window.location.href='', it would get around the security error
+        // I did find a hack where if I call the iframe's window.location.href='', it would get around the security Error
         // However, the main page would look like it was loading indefinitely (URL bar loading spinner would never stop)
         // Plus Firefox 3.6 didn't work no matter what I tried.
         // if (vjs.USER_AGENT.match('Firefox')) {
@@ -5523,13 +5523,13 @@ vjs.Flash = vjs.MediaTechController.extend({
         // document.domain = document.domain+'/.';
         // iDoc.domain = document.domain+'/.';
 
-        // Tried adding the object to the iframe doc's innerHTML. Security error in all browsers.
+        // Tried adding the object to the iframe doc's innerHTML. Security Error in all browsers.
         // iDoc.body.innerHTML = swfObjectHTML;
 
-        // Tried appending the object to the iframe doc's body. Security error in all browsers.
+        // Tried appending the object to the iframe doc's body. Security Error in all browsers.
         // iDoc.body.appendChild(swfObject);
 
-        // Using document.write actually got around the security error that browsers were throwing.
+        // Using document.write actually got around the security Error that browsers were throwing.
         // Again, it's a dynamically generated (same domain) iframe, loading an external Flash swf.
         // Not sure why that's a security issue, but apparently it is.
         iDoc.write(vjs.Flash.getEmbedCode(options['swf'], flashVars, params, attributes));
@@ -5559,7 +5559,7 @@ vjs.Flash = vjs.MediaTechController.extend({
           }
         });
 
-        // Create error listener for all swf errors
+        // Create Error listener for all swf errors
         iWin['errors'] = vjs.bind(this.player_, function(swfID, eventName){
           vjs.log('Flash Error', eventName);
         });
@@ -5646,7 +5646,7 @@ vjs.Flash.prototype.enterFullScreen = function(){
 // Create setters and getters for attributes
 var api = vjs.Flash.prototype,
     readWrite = 'rtmpConnection,rtmpStream,preload,currentTime,defaultPlaybackRate,playbackRate,autoplay,loop,mediaGroup,controller,controls,volume,muted,defaultMuted'.split(','),
-    readOnly = 'error,currentSrc,networkState,readyState,seeking,initialTime,duration,startOffsetTime,paused,played,seekable,ended,videoTracks,audioTracks,videoWidth,videoHeight,textTracks'.split(',');
+    readOnly = 'Error,currentSrc,networkState,readyState,seeking,initialTime,duration,startOffsetTime,paused,played,seekable,ended,videoTracks,audioTracks,videoWidth,videoHeight,textTracks'.split(',');
     // Overridden: buffered
 
 /**
@@ -6359,7 +6359,7 @@ vjs.TextTrack.prototype.deactivate = function(){
 // Indicates that the text track has been loaded with no fatal errors. No new cues will be added to the track except if the text track corresponds to a MutableTextTrack object.
 //
 // Failed to load
-// Indicates that the text track was enabled, but when the user agent attempted to obtain it, this failed in some way (e.g. URL could not be resolved, network error, unknown text track format). Some or all of the cues are likely missing and will not be obtained.
+// Indicates that the text track was enabled, but when the user agent attempted to obtain it, this failed in some way (e.g. URL could not be resolved, network Error, unknown text track format). Some or all of the cues are likely missing and will not be obtained.
 vjs.TextTrack.prototype.load = function(){
 
   // Only load if not loaded yet.
@@ -6643,7 +6643,7 @@ vjs.TextTrackDisplay = vjs.Component.extend({
   init: function(player, options, ready){
     vjs.Component.call(this, player, options, ready);
 
-    // This used to be called during player init, but was causing an error
+    // This used to be called during player init, but was causing an Error
     // if a track should show by default and the display hadn't loaded yet.
     // Should probably be moved to an external track loader when we support
     // tracks that don't need a display.

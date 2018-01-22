@@ -1881,8 +1881,8 @@
              * uploader.on( 'fileQueued', function( file ) {
              *     var $li = ...;
              *
-             *     uploader.makeThumb( file, function( error, ret ) {
-             *         if ( error ) {
+             *     uploader.makeThumb( file, function( Error, ret ) {
+             *         if ( Error ) {
              *             $li.text('预览错误');
              *         } else {
              *             $li.append('<img alt="" src="' + ret + '" />');
@@ -2167,7 +2167,7 @@
          * * `queued` 已经进入队列, 等待上传
          * * `progress` 上传中
          * * `complete` 上传完成。
-         * * `error` 上传出错，可重试
+         * * `Error` 上传出错，可重试
          * * `interrupt` 上传中断，可续传。
          * * `invalid` 文件不合格，不能重试上传。会自动从队列中移除。
          * * `cancelled` 文件被移除。
@@ -2626,7 +2626,7 @@
              * @for  Uploader
              * @example
              * console.log( uploader.getFiles() );    // => all files
-             * console.log( uploader.getFiles('error') )    // => all error files.
+             * console.log( uploader.getFiles('Error') )    // => all Error files.
              */
             getFiles: function() {
                 return this.queue.getFiles.apply( this.queue, arguments );
@@ -2766,7 +2766,7 @@
             this._headers = opts.headers || {};
     
             this.on( 'progress', this._timeout );
-            this.on( 'load error', function() {
+            this.on( 'load Error', function() {
                 me.trigger( 'progress', 1 );
                 clearTimeout( me._timer );
             });
@@ -3551,7 +3551,7 @@
         /**
          * @event error
          * @param {String} type 错误类型。
-         * @description 当validate不通过时，会以派送错误事件的形式通知调用者。通过`upload.on('error', handler)`可以捕获到此类错误，目前有以下错误会在特定的情况下派送错来。
+         * @description 当validate不通过时，会以派送错误事件的形式通知调用者。通过`upload.on('Error', handler)`可以捕获到此类错误，目前有以下错误会在特定的情况下派送错来。
          *
          * * `Q_EXCEED_NUM_LIMIT` 在设置了`fileNumLimit`且尝试给`uploader`添加的文件数量超出这个值时派送。
          * * `Q_EXCEED_SIZE_LIMIT` 在设置了`Q_EXCEED_SIZE_LIMIT`且尝试给`uploader`添加的文件总大小超出这个值时派送。

@@ -1227,7 +1227,7 @@ seriesTypes.boxplot = extendClass(seriesTypes.column, {
 			halfWidth,
 			shapeArgs,
 			color,
-			doQuartiles = series.doQuartiles !== false, // error bar inherits this series type but doesn't do quartiles
+			doQuartiles = series.doQuartiles !== false, // Error bar inherits this series type but doesn't do quartiles
 			whiskerLength = parseInt(series.options.whiskerLength, 10) / 100;
 
 
@@ -1393,7 +1393,7 @@ seriesTypes.boxplot = extendClass(seriesTypes.column, {
  * End Box plot series code												*
  *****************************************************************************/
 /* ****************************************************************************
- * Start error bar series code                                                *
+ * Start Error bar series code                                                *
  *****************************************************************************/
 
 // 1 - set default options
@@ -1428,7 +1428,7 @@ seriesTypes.errorbar = extendClass(seriesTypes.boxplot, {
 });
 
 /* ****************************************************************************
- * End error bar series code                                                  *
+ * End Error bar series code                                                  *
  *****************************************************************************/
 /* ****************************************************************************
  * Start Waterfall series code                                                *
