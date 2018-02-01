@@ -65,7 +65,7 @@ export class leftMenu extends Component {
                                     }
 
                                 </SubMenu>
-                                <Menu.Item key={res.length+1}><Link  to={{ pathname: '/resAdd'}}>添加资源</Link></Menu.Item>
+                                <Menu.Item key={res.length+2}><Link  to={{ pathname: '/resAdd'}}>添加资源</Link></Menu.Item>
                             </SubMenu>
                             <SubMenu key="sub4" title={<span><Icon type="profile"  /><span>文章管理</span></span>}>
                                 <Menu.Item key={res.length+3}>文章列表</Menu.Item>

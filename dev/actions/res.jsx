@@ -92,19 +92,21 @@ export const delRes = (id,resolve,reject) => {
     }
 }
 
-export const addOrEditorResContent = (fieldList,name,resContentId,resolve,reject) => {
+export const addOrEditorResContent = (fieldList,name,resContentId,contentId,resolve,reject) => {
     let startTime = fieldList.startTime;
     let endTime = fieldList.endTime;
     let isOnLine = fieldList.isOnLine?"1":"0";
     delete fieldList.startTime;
     delete fieldList.endTime;
     delete fieldList.isOnLine;
+    console.log(fieldList)
     let content = JSON.stringify(fieldList);
     let param = {
         startTime:startTime,
         endTime:endTime,
         onLine:isOnLine,
         content:content,
+        contentId:contentId,
         name:name
     }
     return dispatch => {
@@ -123,7 +125,6 @@ export const addOrEditorResContent = (fieldList,name,resContentId,resolve,reject
                 reject();
             });
         }
-
     }
 }
 

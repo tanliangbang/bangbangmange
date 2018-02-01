@@ -33,6 +33,7 @@ export class ResAddContent extends React.Component {
             endValue: null,
             endOpen: false,
             commiting:false,
+            contentId: 0
         }
 
     }
@@ -75,12 +76,15 @@ export class ResAddContent extends React.Component {
 
     }
     getResContentDate(typeList,resContentId,name){
-        console.log(resContentId)
-
         let _this = this;
         new Promise(function(resolve,reject){
             _this.props.actions.getResContent(resContentId,name,resolve,reject);
         }).then(function(res){
+            if(res.content.contentId){
+                _this.setState({
+                    contentId:res.content.contentId
+                })
+            }
             let isOnLine = res.isOnLine==1?true:false;
             let dateFormat = "'YYYY/MM/DD' HH:mm:ss";
             let startTime = Tool.formatDate2(res.startTime,"-");
@@ -162,6 +166,7 @@ export class ResAddContent extends React.Component {
         let _this = this;
         let id = this.state.id;
         let type = this.state.type;
+        let contentId = this.state.contentId
         this.props.form.validateFields((err, values) => {
             values["startTime"] = values["startTime"].format('X');
             values["endTime"] = values["endTime"].format('X');
@@ -193,7 +198,7 @@ export class ResAddContent extends React.Component {
                  let resContentId = this.state.resContentId;
                  this.setState({commiting:true})
                 new Promise(function(resolve,reject){
-                    _this.props.actions.addOrEditorResContent(values,type,resContentId,resolve,reject)
+                    _this.props.actions.addOrEditorResContent(values,type,resContentId,contentId,resolve,reject)
                 }).then(function(){
                      message.success("操作成功")
                      browserHistory.push("resContentList?id="+id+"&type="+type)
