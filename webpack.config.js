@@ -26,7 +26,7 @@ module.exports = function( env ) {
             historyApiFallback: true,
             proxy: {
                 '/api': {
-                    target: 'http://118.89.161.150',
+                    target: 'http://118.24.159.55',
                     secure: false
                 }
             }
