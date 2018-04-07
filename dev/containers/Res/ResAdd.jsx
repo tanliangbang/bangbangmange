@@ -3,10 +3,11 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { browserHistory } from 'react-router';
-import { Table,Form, Input,Divider, Icon, Button,message } from 'antd';
+import { Table, Form, Input, Divider, Icon, Button, message, Select} from 'antd';
 import * as resAction from '../../actions/res.jsx';
 import ResFieldAdd from "../../Components/Res/ResFieldAdd.jsx";
 const FormItem = Form.Item;
+const Option = Select.Option;
 
 export class ResAdd extends React.Component {
     constructor(props) {
@@ -29,11 +30,14 @@ export class ResAdd extends React.Component {
     componentDidMount(){
         let currId = this.state.currId;
         let _this = this;
+        new Promise(function(resolve,reject){
+            _this.props.actions.getPlateList(resolve,reject)
+        })
         if(this.state.isEdit){
             new Promise(function(resolve,reject){
                 _this.props.actions.getResDetail(currId,resolve,reject)
             }).then(function(res){
-                _this.props.form.setFieldsValue({name:res.name,cname:res.cname,res_type:res.res_type})
+                _this.props.form.setFieldsValue({name:res.name,cname:res.cname,res_type:parseInt(res.res_type)})
                let dataSource = _this.dealResFieldList(res.type_specification)
                 _this.setState({
                     dataSource:dataSource,
@@ -145,7 +149,7 @@ export class ResAdd extends React.Component {
                     _this.setState({
                         commiting:false
                     })
-                    _this.success("操作失败");
+                    _this.error("操作失败");
                 });
             }
         });
@@ -174,8 +178,13 @@ export class ResAdd extends React.Component {
             wrapperCol: { span: 8 }
         };
         const { getFieldDecorator } = this.props.form;
+        const {plateList} = this.props;
         const {dataSource,commiting,isEdit} = this.state;
 
+        let plainOptions = [];
+        for (let i = 0; i < plateList.length; i++) {
+            plainOptions.push(<Option key={i} value={plateList[i].id}>{plateList[i].name+"("+plateList[i].type+")"}</Option>);
+        }
         const columns = [{
             title: '中文名称',
             dataIndex: 'dataChinaName',
@@ -241,15 +250,19 @@ export class ResAdd extends React.Component {
                                 )}
                             </FormItem>
 
-                            <FormItem {...formItemLayout} label="资源类型">
+                            <FormItem {...formItemLayout} label='资源类型' >
                                 {getFieldDecorator('res_type', {
                                     rules: [{
-                                        message: '请输入资源类型(可选)'
+                                        required: true,
+                                        message: '请选择资源类型'
                                     }],
                                 })(
-                                    <Input placeholder="请输入资源名称" />
+                                    <Select placeholder="--请选择--" >
+                                         {plainOptions}
+                                    </Select>
                                 )}
                             </FormItem>
+
                     </div>
 
                 <div className="res-field">
@@ -272,7 +285,7 @@ export default Form.create({})(
     connect((state)=>{
     return {
         router:state.routing.locationBeforeTransitions,
-
+        plateList:state.plate.plateList
     }
 }, (dispatch)=>{
     const allAction =Object.assign(resAction);

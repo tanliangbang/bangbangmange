@@ -37,6 +37,34 @@ export const routes = {
                     callback(null, require('./containers/Res/ResAddContent.jsx').default)
                 }, 'ResAddContent')
             }
+        },{
+            path: 'addArticle',
+            getComponent(nextState, callback){
+                require.ensure([], (require) => {
+                    callback(null, require('./containers/article/AddArticle.jsx').default)
+                }, 'AddArticle')
+            }
+        },{
+            path: 'articleList',
+            getComponent(nextState, callback){
+                require.ensure([], (require) => {
+                    callback(null, require('./containers/article/ArticleList.jsx').default)
+                }, 'ArticleList')
+            }
+        },{
+            path: 'addPlate',
+            getComponent(nextState, callback){
+                require.ensure([], (require) => {
+                    callback(null, require('./containers/Plate/AddPlate.jsx').default)
+                }, 'AddPlate')
+            }
+        },{
+            path: 'plateList',
+            getComponent(nextState, callback){
+                require.ensure([], (require) => {
+                    callback(null, require('./containers/Plate/PlateList.jsx').default)
+                }, 'PlateList')
+            }
         }]
     },{
         path: 'login',

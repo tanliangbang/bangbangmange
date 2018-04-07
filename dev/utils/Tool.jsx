@@ -420,3 +420,23 @@ export { Tool }
 
 
 
+/* //数据转换
+var list = resContentList.content;
+var _this = this;
+for(var i=0;i<list.length;i++){
+    var obj={}
+    var content = list[i].content
+    obj.title = content.title
+    obj.imgUrl = content.titleImg
+    obj.wherefrom = content.from
+    obj.breif = content.breif
+    obj.is_show = 1
+    obj.content = content.content
+    obj.auth = 1
+    obj.label = ""
+    obj.type=2
+    new Promise(function(resolve,reject){
+        _this.props.actions.addOrEditorArticle(obj,resolve,reject);
+    })
+    console.log(obj)
+}*/

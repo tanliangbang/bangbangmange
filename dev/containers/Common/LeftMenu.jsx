@@ -5,6 +5,7 @@ import { Link } from 'react-router';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as resAction from '../../actions/res.jsx';
+import * as plateAction from '../../actions/plate.jsx';
 
 const { Header, Content, Footer, Sider } = Layout;
 const SubMenu = Menu.SubMenu;
@@ -24,6 +25,9 @@ export class leftMenu extends Component {
         }).then(function(){
 
         })
+        new Promise(function(resolve,reject){
+            _this.props.actions.getPlateAndResList(resolve,reject);
+        })
 
     }
 
@@ -41,38 +45,54 @@ export class leftMenu extends Component {
 
 
     render() {
-        const{res} = this.props
+        const{res, plateAndResList} = this.props
+        let tempNum = 0;
+        for(let i=0;i<plateAndResList.length; i++) {
+            for(let j=0; j<plateAndResList[i].res.length; j++){
+                plateAndResList[i].res[j]['m_num'] = tempNum++;
+            }
+        }
         if(res.length<=0){
             return<div></div>;
         }
         return (
                <div className="leftMenu">
-                        <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline"  openKeys={this.state.openKeys}
-                              onOpenChange={this.onOpenChange.bind(this)} >
-                            <SubMenu key="sub1" title={<span><Icon type="home" /><span>首页</span></span>}>
-                                <Menu.Item key="1">
-                                    <Link  to='/'> 首页</Link>
-                                </Menu.Item>
-                            </SubMenu>
-                            <SubMenu key="sub3" title={<span><Icon type="database" /><span>资源管理</span></span>}>
-                                <SubMenu key="sub2" title={<span>资源列表</span>}>
-                                    {
-                                        res.map((item, k) => {
-                                            return (
-                                                <Menu.Item key={k+2}> <Link  to={{ pathname: '/resContentList', query: { type: item.name,id:item.id } }}>{item.cname}</Link></Menu.Item>
-                                            )
-                                        })
-                                    }
+                   <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline"  openKeys={this.state.openKeys}
+                         onOpenChange={this.onOpenChange.bind(this)} >
+                       <SubMenu key="sub1" title={<span><Icon type="home" /><span>首页</span></span>}>
+                           <Menu.Item key="1">
+                               <Link  to='/'> 首页</Link>
+                           </Menu.Item>
+                       </SubMenu>
 
-                                </SubMenu>
-                                <Menu.Item key={res.length+2}><Link  to={{ pathname: '/resAdd'}}>添加资源</Link></Menu.Item>
-                            </SubMenu>
-                            <SubMenu key="sub4" title={<span><Icon type="profile"  /><span>文章管理</span></span>}>
-                                <Menu.Item key={res.length+3}>文章列表</Menu.Item>
-                                <Menu.Item key={res.length+4}>添加文章</Menu.Item>
-                            </SubMenu>
+                       <SubMenu key="sub2" title={<span><Icon type="profile"  /><span>文章管理</span></span>}>
+                           <Menu.Item key='2'><Link  to={{ pathname: '/articleList' }}>文章列表</Link></Menu.Item>
+                           <Menu.Item key='3'><Link  to={{ pathname: '/articleList',query:{community:1} }}>社区文章列表</Link></Menu.Item>
+                           <Menu.Item key='4'><Link  to={{ pathname: '/addArticle' }}>添加文章</Link></Menu.Item>
+                       </SubMenu>
+                       <SubMenu key="sub3" title={<span><Icon type="profile"  /><span>模块管理</span></span>}>
+                           <Menu.Item key='5'><Link  to={{ pathname: '/plateList' }}>模块列表</Link></Menu.Item>
+                           <Menu.Item key='6'><Link  to={{ pathname: '/addplate' }}>添加模块</Link></Menu.Item>
+                           <Menu.Item key='7'><Link  to={{ pathname: '/resAdd' }}>添加资源</Link></Menu.Item>
+                       </SubMenu>
 
-                        </Menu>
+                       {
+                           plateAndResList.map((plate, m) => {
+                               return (
+                                   <SubMenu key={m+4} title={<span><Icon type="profile"  /><span>{plate.detail}</span></span>}>
+                                       {
+                                           plate.res.map((item, k) => {
+                                               return (
+                                                   <Menu.Item key={parseInt(item['m_num'])+8}><Link to={{ pathname: '/resContentList',query:{id:item.id,type:item.name}}}>{item.cname}</Link></Menu.Item>
+                                               )
+                                           })
+                                       }
+                                   </SubMenu>
+                               )
+                           })
+                       }
+
+                   </Menu>
                </div>
         );
     }
@@ -81,10 +101,11 @@ export class leftMenu extends Component {
 
 export default  connect((state)=>{
     return {
-        res:state.res.resList
+        res:state.res.resList,
+        plateAndResList: state.plate.plateAndResList
     }
 }, (dispatch)=>{
-    const allAction =Object.assign(resAction);
+    const allAction =Object.assign(resAction,plateAction);
     return {
         actions: bindActionCreators(allAction, dispatch)
     }

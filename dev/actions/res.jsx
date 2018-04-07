@@ -1,7 +1,7 @@
 import { Tool, merged } from '../utils/Tool.jsx';
 import * as actionConstant from '../constants/actionConstant.jsx';
 import axios  from 'axios';
-
+import * as plateAction from './plate.jsx'
 const api = require( './../utils/api.jsx' );
 
 
@@ -67,12 +67,14 @@ export const addOrEditRes = (res,resolve,reject) => {
         if(res.id===undefined||res.id ===null){
             axios.post(api.getAddResUrl,res).then(function (res) {
                 dispatch(getResList(resolve,reject))
+                dispatch(plateAction.getPlateAndResList(resolve,reject))
             }).catch(function (response) {
                 reject();
             });
         }else{
             axios.post(api.getEditResUrl,res).then(function (res) {
                 dispatch(getResList(resolve,reject))
+                dispatch(plateAction.getPlateAndResList(resolve,reject))
             }).catch(function (response) {
                 reject();
             });

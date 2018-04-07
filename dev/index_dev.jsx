@@ -26,7 +26,7 @@ import rootReducer from './reducers/index.jsx'
 //注册store
 const store = createStore(
     rootReducer,
-    DevTools.instrument(), //注册调试工具
+   // DevTools.instrument(), //注册调试工具
     applyMiddleware(thunk)
 )
 

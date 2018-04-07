@@ -173,6 +173,11 @@ export class ResAddContent extends React.Component {
             if (!err) {
                 let fieldList = _this.state.fieldList;
                 let value = "";
+                for(let item in values){
+                    if(item.split('_').length>1 && item.split('_')[0] === 'sys'){
+                        values[item] = values[item] ? values[item]: 0
+                    }
+                }
                  for(let i=0;i<fieldList.length;i++){
                      if(fieldList[i].dataType==="date"){
                          value = fieldList[i]["my-title"];
@@ -246,6 +251,18 @@ export class ResAddContent extends React.Component {
         };
         const { getFieldDecorator } = this.props.form;
         var rules = [];
+
+        if(item['my-title'].split("_")[0]==='sys'){
+            return (
+                <FormItem {...formItemLayout} className="none" label={item.dataChinaName} key={key}>
+                    {getFieldDecorator(item["my-title"], {
+                        initialValue: 0
+                    })(
+                        <Input />
+                    )}
+                </FormItem>
+            )
+        }
 
         if(item.dataType==="text"){
             if(item.dataIsNeed==1){

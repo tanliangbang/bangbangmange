@@ -1,0 +1,40 @@
+@import "../../style/var.scss";
+
+.addPlate{
+  width: 90%;
+  margin: 30px 5%;
+  padding-bottom: 30px;
+  background: #fff;
+  border-radius: 5px;
+  .ant-form-item {
+    padding: 20px 0px;
+    border-bottom: 1px solid #e8e8e8;
+    margin: 0px;
+  }
+}
+
+.plateList{
+  padding:30px;
+  table{
+    width:100%;
+    text-align: left;
+    background:#fff;
+    tr{
+      td{
+        max-width:300px;
+        overflow: hidden;
+        text-overflow:ellipsis;
+        white-space: nowrap;
+      }
+    }
+  }
+  .operaIcon{
+    a{
+      font-size:20px;
+      color:$main-color;
+    }
+  }
+  .ant-table-pagination.ant-pagination{
+    float:left;
+  }
+}

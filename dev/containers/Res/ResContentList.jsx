@@ -5,6 +5,8 @@ import { bindActionCreators } from 'redux';
 import { browserHistory,Link } from 'react-router';
 import { Table, Icon, Divider,Button,message } from 'antd';
 import * as resAction from '../../actions/res.jsx';
+import * as articleAction from '../../actions/article.jsx';
+
 import { Tool } from '../../utils/Tool.jsx';
 import  Mask  from '../../Components/Common/Mask.jsx';
 
@@ -17,7 +19,7 @@ export class ResContentList extends React.Component {
         let pagination = {
             total: 0,
             defaultCurrent: 1,
-            pageSize: 5,
+            pageSize: 100,
             loading:false,
             showSizeChanger: true,
             onShowSizeChange: (current, pageSize) => {
@@ -93,7 +95,7 @@ export class ResContentList extends React.Component {
             _this.setState({
                 delLoading:false
             })
-            _this.success("删除失败");
+            _this.error("删除失败");
         });
     }
 
@@ -110,7 +112,7 @@ export class ResContentList extends React.Component {
         }).then(function(){
             _this.success("删除成功");
         }).catch(function(res){
-            _this.success("删除失败");
+            _this.error("删除失败");
         });
     }
 
@@ -131,7 +133,7 @@ export class ResContentList extends React.Component {
         let _this = this;
         _this.setState({loading:true})
         let pResList =  new Promise(function(resolve,reject){
-            _this.props.actions.getResContentList(type,1,5,resolve,reject);
+            _this.props.actions.getResContentList(type,1,_this.state.pagination.pageSize,resolve,reject);
         })
         let pResDetail = new Promise(function(resolve,reject){
             _this.props.actions.getResDetail(id,resolve,reject);
@@ -279,7 +281,7 @@ export default  connect((state)=>{
         resDetail:state.res.resDetail
     }
 }, (dispatch)=>{
-    const allAction =Object.assign(resAction);
+    const allAction =Object.assign(resAction,articleAction);
     return {
         actions: bindActionCreators(allAction, dispatch)
     }
