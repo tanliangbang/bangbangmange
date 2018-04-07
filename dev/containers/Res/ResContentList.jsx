@@ -201,7 +201,7 @@ export class ResContentList extends React.Component {
                          title: content[item].dataChinaName,
                          key: item,
                          dataIndex: item,
-                         render: text => <img src={text}/>,
+                         render: text => text?<img src={text}/>:'无',
                          className:"fileImg"
                      }
                  }else{
@@ -227,7 +227,10 @@ export class ResContentList extends React.Component {
         var content = "";
         for(var i=0;i<list.length;i++){
              content = list[i].content;
-             for(let item in content){
+            if(typeof content !== 'object'){
+                content = {}
+            }
+            for(let item in content){
                  if(content[item] instanceof Array){
                    content[item] = content[item].join(",")
                  }
