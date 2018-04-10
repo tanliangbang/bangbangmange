@@ -95,10 +95,17 @@ export class AddArticle extends React.Component {
                 if(currId!==undefined){
                     values.id = currId;
                 }
-                if(this.state.oldTypeId!==null){
-                    values.oldTypeId = this.state.oldTypeId;
+                if(_this.state.oldTypeId!==null){
+                    values.oldTypeId = _this.state.oldTypeId;
                 }
-                values.contentId = this.state.contentId
+                values.contentId = _this.state.contentId
+                let typeList = _this.state.typeList;
+                for (let i = 0; i< typeList.length; i++) {
+                    console.log(values.typeId, typeList[i].id)
+                   if(values.typeId === typeList[i].id) {
+                       values.typeName = typeList[i].content.name
+                   }
+                }
                 new Promise(function(resolve,reject){
                     _this.props.actions.addOrEditorArticle(values,resolve,reject);
                 }).then(function(){
