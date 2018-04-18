@@ -2,7 +2,7 @@ import './index.scss'
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Table, Icon, Divider,Switch,message } from 'antd';
+import { Table, Icon, Divider,Switch,message,Popconfirm } from 'antd';
 import * as ArticleAction from '../../actions/article.jsx';
 import  Mask  from '../../Components/Common/Mask.jsx';
 import {browserHistory} from "react-router";
@@ -15,7 +15,7 @@ export class ArticleList extends React.Component {
         let pagination = {
             total: 0,
             defaultCurrent: 1,
-            pageSize: 5,
+            pageSize: 10,
             loading:false,
             showSizeChanger: true,
             onShowSizeChange: (current, pageSize) => {
@@ -81,7 +81,7 @@ export class ArticleList extends React.Component {
         this.refs.mask.showModal("确定删除当前模块？")
     }
 
-    delCurrPlate(index,id){
+    delCurrPlate(id){
         let _this = this;
         new Promise(function(resolve,reject){
             _this.props.actions.delPlate(id,resolve,reject)
@@ -126,20 +126,13 @@ export class ArticleList extends React.Component {
             dataIndex: 'wherefrom',
             key:'wherefrom'
         }, {
-            title: "主题图片",
-            key: 'imgUrl',
-            dataIndex: 'imgUrl',
-            render: text => text?<img src={text}/>:'',
-            className:"fileImg",
-            key:'fileImg'
+            title: "类型",
+            dataIndex: 'typeName',
+            key:'typeName'
         }, {
             title: '创建时间',
             dataIndex: 'createTime',
             key:'createTime'
-        }, {
-            title: '修改时间',
-            dataIndex: 'modifiedTime',
-            key:'modifiedTime'
         }, {
             title: '是否显示',
             dataIndex: 'is_show',
@@ -176,7 +169,14 @@ export class ArticleList extends React.Component {
                 <span>
                   <a> <Icon type="edit" onClick={this.updateAritle.bind(this,record.id)} /></a>
                   <Divider type="vertical" />
+                  <Popconfirm title="确定删除?" okText="确 定" cancelText="取 消" placement="top" onConfirm={this.delCurrPlate.bind(this,record.id)}>
+                      <a href="javascript:;"><Icon type="delete" /></a>
+                   </Popconfirm>
+{/*
                   <a><Icon type="delete" onClick={this.showMask.bind(this,this.delCurrPlate.bind(this,record.id))} /></a>
+*/}
+                  <Divider type="vertical" />
+                  <a target="_blank" href={'https://www.tanliangbang.club/articleDetail?id='+record.id}><Icon type="eye" /></a>
                 </span>
             ),
         }];
@@ -197,7 +197,21 @@ export class ArticleList extends React.Component {
         return (
             <div className="articleList">
                 <div className="my-common-title">模块列表</div>
-                <Table dataSource={dataSource} columns={columns}   loading={loading}   pagination={pagination}  />
+                <Table dataSource={dataSource} columns={columns}
+                       expandedRowRender={record =>
+                           <div className="otherInfo">
+                               <span>来源 : {record.wherefrom}</span>
+                               <span>图片 : <img src={record.imgUrl} /></span>
+                               <span>作者 : {record.nick!==null?record.nick:record.username}</span>
+                               <span>点赞数 : {record.likeNum}</span>
+                               <span>评论数 : {record.comment_num}</span>
+                               <span>修改时间 : {record.modifiedTime}</span>
+                               <span>浏览数 : {record.ready_num}</span>
+                               <span>标签 : {record.label}</span>
+                               <span>关键字 : {record.seo_keys}</span>
+                           </div>
+                       }
+                       loading={loading}   pagination={pagination}  />
                 <Mask callback={this.state.maskCallback} ref="mask"/>
             </div>
         );

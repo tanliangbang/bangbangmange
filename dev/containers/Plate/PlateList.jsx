@@ -28,7 +28,7 @@ export class PlateList extends React.Component {
         this.refs.mask.showModal("确定删除当前模块？")
     }
 
-    delCurrPlate(index,id){
+    delCurrPlate(id){
         let _this = this;
         new Promise(function(resolve,reject){
             _this.props.actions.delPlate(id,resolve,reject)
@@ -82,7 +82,6 @@ export class PlateList extends React.Component {
         for(let i = 0; i < plateList.length; i++) {
             plateList[i]['key'] = plateList[i]['id']
         }
-        console.log(plateList)
         return (
             <div className="plateList">
                 <div className="my-common-title">模块列表</div>
