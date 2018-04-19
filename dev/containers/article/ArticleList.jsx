@@ -2,39 +2,42 @@ import './index.scss'
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Table, Icon, Divider,Switch,message,Popconfirm } from 'antd';
-import * as ArticleAction from '../../actions/article.jsx';
+import { Table, Icon, Divider,Switch,message,Popconfirm,Select,Button,Form } from 'antd';
+import * as articleAction from '../../actions/article.jsx';
 import  Mask  from '../../Components/Common/Mask.jsx';
 import {browserHistory} from "react-router";
 import {Tool} from "../../utils/Tool.jsx";
+import axios from "axios";
+const Option = Select.Option;
+const FormItem = Form.Item;
 
 export class ArticleList extends React.Component {
     constructor(props) {
         super(props);
         let _this = this;
+        let current = this.props.router.query.page
+        current = current?parseInt(current):1
+
         let pagination = {
             total: 0,
-            defaultCurrent: 1,
             pageSize: 10,
             loading:false,
+            defaultCurrent: current,
             showSizeChanger: true,
-            onShowSizeChange: (current, pageSize) => {
-                _this.getDate(current, pageSize);
-                let pagination = this.state.pagination;
-                pagination.pageSize = pageSize;
-                _this.setState({
-                    pagination:pagination
-                })
+            onShowSizeChange: () => {
+                _this.getDate();
             },
-            onChange:(current, pageSize) => {
-                _this.getDate(current, pageSize)
+            onChange:(current) => {
+                _this.getDate({current:current})
             },
         }
         let community = this.props.router.query.community;
         this.state = {
             pagination:pagination,
             loading:false,
-            community:community
+            community:community,
+            typeList: [],
+            current: current
         }
     }
 
@@ -45,22 +48,56 @@ export class ArticleList extends React.Component {
             this.setState({
                 community:nextCommunity
             })
-            this.getDate(1,this.state.pagination.pageSize,nextCommunity?nextCommunity:0)
+            this.getDate({nextCommunity:(nextCommunity?nextCommunity:0)})
         }
     }
 
-    getDate(current, pageSize,nextCommunity){
+    getDate(obj = {}){
         let _this = this;
-        let community = 0;
-        if(parseInt(nextCommunity)===0||parseInt(nextCommunity)===1){
-            community = nextCommunity;
-        }else{
-            community = this.state.community
+        let community = obj['nextCommunity']===undefined?this.props.router.query.community:obj.obj['nextCommunity'];
+        let pageSize = this.state.pagination.pageSize
+        let current = 1;
+        if(obj['currPage']) {
+            current = obj['currPage']
+        }else {
+            current = this.state.pagination.defaultCurrent
         }
         let param = {
             start:(current-1)*pageSize,
             pageSize:pageSize,
             community:community
+        }
+        let query = {}
+        if (obj['otherParam']) {
+            var otherQuery = {}
+            let str = "?"
+            for (let item in obj['otherParam']) {
+                if (obj['otherParam'][item]!=='-1') {
+                    str += (item +"="+ obj['otherParam'][item]+"&")
+                    otherQuery[item] = obj['otherParam'][item]
+                }
+            }
+            if(str!=="?") {
+                str = str.substring(0,str.length-1)
+            }else {
+                str = ""
+            }
+            if (current!==1) {
+                str = str +"&page="+current;
+            }
+            browserHistory.push("/articleList"+str);
+            query = otherQuery
+        }else {
+            query = this.props.router.query
+        }
+
+
+
+
+
+
+        for (let item in query) {
+            param[item] = query[item]
         }
         _this.setState({loading:true})
         new Promise(function(resolve,reject){
@@ -71,14 +108,26 @@ export class ArticleList extends React.Component {
     }
 
 
-    componentWillMount(){
-        this.getDate(1,this.state.pagination.pageSize)
-    }
-    showMask(maskCallback){
-        this.setState({
-            maskCallback:maskCallback
+    async componentWillMount(){
+        let typeList = await new Promise(function(resolve,reject){
+            axios.get("/api/res/getResContentList?name=article_type").then(function (res) {
+                resolve(res.data.data.content)
+            }).catch(function (err) {
+                reject(err)
+            });
         })
-        this.refs.mask.showModal("确定删除当前模块？")
+        this.setState({
+            typeList:typeList
+        })
+        this.getDate()
+    }
+
+    handleSubmit(e) {
+        e.preventDefault();
+        let _this = this;
+        this.props.form.validateFields((err, values) => {
+            _this.getDate({otherParam:values})
+        })
     }
 
     delCurrPlate(id){
@@ -93,6 +142,7 @@ export class ArticleList extends React.Component {
     }
 
     updateAritle(id) {
+        this.props.actions.setPreUrl(this.props.router.pathname+this.props.router.search)
         browserHistory.push("/addArticle?id="+id);
     }
 
@@ -138,28 +188,28 @@ export class ArticleList extends React.Component {
             dataIndex: 'is_show',
             key:'is_show',
             render: (text, record) => (
-                <Switch defaultChecked={text} onChange={this.onChange.bind(this,{id:record.id,opera:'show'})}  checkedChildren="是"  unCheckedChildren="否"/>
+                <Switch defaultChecked={parseInt(text)===1?true:false} onChange={this.onChange.bind(this,{id:record.id,opera:'show'})}  checkedChildren="是"  unCheckedChildren="否"/>
             ),
         },{
             title: '是否推荐',
             dataIndex: 'is_recommend',
             key:'is_recommend',
             render: (text, record) => (
-                <Switch defaultChecked={text} onChange={this.onChange.bind(this,{id:record.id,opera:'recommend'})}  checkedChildren="是"  unCheckedChildren="否"/>
+                <Switch defaultChecked={parseInt(text)===1?true:false} onChange={this.onChange.bind(this,{id:record.id,opera:'recommend'})}  checkedChildren="是"  unCheckedChildren="否"/>
             ),
         },{
             title: '是否顶置',
             dataIndex: 'is_top',
             key:'is_top',
             render: (text, record) => (
-                   <Switch defaultChecked={text} onChange={this.onChange.bind(this,{id:record.id,opera:'top'})} checkedChildren="是"  unCheckedChildren="否"/>
+                   <Switch defaultChecked={parseInt(text)===1?true:false} onChange={this.onChange.bind(this,{id:record.id,opera:'top'})} checkedChildren="是"  unCheckedChildren="否"/>
             ),
         },{
             title: '是否好文章',
             dataIndex: 'is_good',
             key:'is_good',
             render: (text, record) => (
-                <Switch defaultChecked={text} onChange={this.onChange.bind(this,{id:record.id,opera:'good'})} checkedChildren="是"  unCheckedChildren="否"/>
+                <Switch defaultChecked={parseInt(text)===1?true:false} onChange={this.onChange.bind(this,{id:record.id,opera:'good'})} checkedChildren="是"  unCheckedChildren="否"/>
             ),
         },{
             title: '操作',
@@ -172,15 +222,14 @@ export class ArticleList extends React.Component {
                   <Popconfirm title="确定删除?" okText="确 定" cancelText="取 消" placement="top" onConfirm={this.delCurrPlate.bind(this,record.id)}>
                       <a href="javascript:;"><Icon type="delete" /></a>
                    </Popconfirm>
-{/*
-                  <a><Icon type="delete" onClick={this.showMask.bind(this,this.delCurrPlate.bind(this,record.id))} /></a>
-*/}
                   <Divider type="vertical" />
                   <a target="_blank" href={'https://www.tanliangbang.club/articleDetail?id='+record.id}><Icon type="eye" /></a>
                 </span>
             ),
         }];
-        const {loading, pagination} = this.state
+
+
+        const {loading, pagination, typeList} = this.state
         const {articleList} = this.props;
         let dataSource = articleList.content
         pagination.total = articleList.pageTotal
@@ -189,13 +238,75 @@ export class ArticleList extends React.Component {
             dataSource[i].key = dataSource[i]['id']
             dataSource[i]['modifiedTime'] = Tool.formatDate2(dataSource[i].modifiedTime,"-");
             dataSource[i]['createTime'] = Tool.formatDate2(dataSource[i].createTime,"-");
-            dataSource[i]['is_top'] = dataSource[i]['is_top'] === 1 ? true:false
-            dataSource[i]['is_show'] = dataSource[i]['is_show'] === 1 ? true:false
-            dataSource[i]['is_recommend'] = dataSource[i]['is_recommend'] === 1 ? true:false
-            dataSource[i]['is_good'] = dataSource[i]['is_good'] === 1 ? true:false
         }
+        let plainOptions = [];
+        for (let i = 0; i < typeList.length; i++) {
+            plainOptions.push(<Option key={i+1} value={typeList[i].id}>{typeList[i].content.name}</Option>);
+        }
+        const { getFieldDecorator } = this.props.form;
         return (
             <div className="articleList">
+                <div className="search">
+                    <Form layout="inline" onSubmit={this.handleSubmit.bind(this)}>
+                        <FormItem  label='文章类型' >
+                            {getFieldDecorator('typeId', {
+                                initialValue:'-1'
+                            })(
+                                <Select  style={{ width: 150 }}  >
+                                    <Option key="0" value="-1">全部</Option>
+                                    {plainOptions}
+                                </Select>
+                            )}
+                        </FormItem>
+
+                        <FormItem  label='显示' >
+                            {getFieldDecorator('show', {
+                                initialValue:'-1'
+                            })(
+                                <Select  style={{ width: 150 }} >
+                                    <Option value="-1">全部</Option>
+                                    <Option value="1">是</Option>
+                                    <Option value="0">否</Option>
+                                </Select>
+                            )}
+                        </FormItem>
+
+                        <FormItem  label='推荐' >
+                            {getFieldDecorator('recommend', {
+                                initialValue:'-1'
+                            })(
+                                <Select  style={{ width: 150 }} >
+                                    <Option value="-1">全部</Option>
+                                    <Option value="1">是</Option>
+                                    <Option value="0">否</Option>
+                                </Select>
+                            )}
+                        </FormItem>
+                        <FormItem  label='顶置' >
+                            {getFieldDecorator('top', {
+                                initialValue:'-1'
+                            })(
+                                <Select  style={{ width: 150 }} >
+                                    <Option value="-1">全部</Option>
+                                    <Option value="1">是</Option>
+                                    <Option value="0">否</Option>
+                                </Select>
+                            )}
+                        </FormItem>
+                        <FormItem  label='好文' >
+                            {getFieldDecorator('good', {
+                                initialValue:'-1'
+                            })(
+                                <Select  style={{ width: 150 }} >
+                                    <Option value="-1">全部</Option>
+                                    <Option value="1">是</Option>
+                                    <Option value="0">否</Option>
+                                </Select>
+                            )}
+                        </FormItem>
+                   <Button type="primary"    htmlType="submit">搜 索</Button>
+                    </Form>
+                </div>
                 <div className="my-common-title">模块列表</div>
                 <Table dataSource={dataSource} columns={columns}
                        expandedRowRender={record =>
@@ -218,17 +329,14 @@ export class ArticleList extends React.Component {
     }
 }
 
-
-
-
-export default  connect((state)=>{
+export default Form.create({})(connect((state)=>{
     return {
         router:state.routing.locationBeforeTransitions,
         articleList:state.article.articleList,
     }
 }, (dispatch)=>{
-    const allAction =Object.assign(ArticleAction);
+    const allAction =Object.assign(articleAction);
     return {
         actions: bindActionCreators(allAction, dispatch)
     }
-})(ArticleList);
+})(ArticleList));

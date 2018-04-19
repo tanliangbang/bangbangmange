@@ -18,7 +18,7 @@ const DevTools = createDevTools(
     </DockMonitor>
 )
 
-import Routers from './Routers.jsx'
+import Routers from './routes/Routers.jsx'
 
 //获取合并后的 reducer
 import rootReducer from './reducers/index.jsx'

@@ -101,7 +101,6 @@ export class AddArticle extends React.Component {
                 values.contentId = _this.state.contentId
                 let typeList = _this.state.typeList;
                 for (let i = 0; i< typeList.length; i++) {
-                    console.log(values.typeId, typeList[i].id)
                    if(values.typeId === typeList[i].id) {
                        values.typeName = typeList[i].content.name
                    }
@@ -113,7 +112,12 @@ export class AddArticle extends React.Component {
                         commiting:false,
                     })
                     _this.success("操作成功");
-                    browserHistory.push("/articleList");
+                    if (_this.props.preUrl) {
+                        browserHistory.push(_this.props.preUrl);
+                    }else {
+                        browserHistory.push("/articleList");
+                    }
+
                 }).catch(function(reason){
                     _this.setState({
                         commiting:false
@@ -249,14 +253,14 @@ export class AddArticle extends React.Component {
 
 
 
-export default Form.create({})(
-    connect((state)=>{
-        return {
-            myrouter:state.routing.locationBeforeTransitions,
-        }
-    }, (dispatch)=>{
-        const allAction =Object.assign(articleAction);
-        return {
-            actions: bindActionCreators(allAction, dispatch)
-        }
-    })(AddArticle));
+export default Form.create({})(connect((state)=>{
+  return {
+      myrouter:state.routing.locationBeforeTransitions,
+      preUrl:state.article.preUrl
+  }
+}, (dispatch)=>{
+  const allAction =Object.assign(articleAction);
+  return {
+      actions: bindActionCreators(allAction, dispatch)
+  }
+})(AddArticle));

@@ -6,6 +6,7 @@ import * as actionConstant from '../constants/actionConstant.jsx';
 // 初始化状态
 let initarticle = {
     articleList:[],
+    preUrl:""
 }
 
 export default function article(state = initarticle, action) {
@@ -14,7 +15,10 @@ export default function article(state = initarticle, action) {
             return Object.assign({}, state, {
                 articleList:action.articleList
             });
-
+        case actionConstant.SET_PRE_URL:
+            return Object.assign({}, state, {
+                preUrl:action.preUrl
+            });
         default : return state;
     }
 }

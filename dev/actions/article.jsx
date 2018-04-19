@@ -67,6 +67,16 @@ export const operaArticle = (param,resolve,reject) => {
 }
 
 
+export const setPreUrlfn = (response) => ({
+    type: actionConstant.SET_PRE_URL,
+    preUrl: response
+})
+
+export const setPreUrl = (url) => {
+    return dispatch => {
+        dispatch(setPreUrlfn(url))
+    }
+}
 
 
 

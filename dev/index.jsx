@@ -6,7 +6,7 @@ import { browserHistory} from 'react-router' // 路由
 import { syncHistoryWithStore } from 'react-router-redux' //路由使用redux管理
 import configureStore from './store/configureStore.jsx';
 
-import Routers from './Routers.jsx'
+import Routers from './routes/Routers.jsx'
 
 
 //注册store
