@@ -67,10 +67,12 @@ export class leftMenu extends Component {
 
                        <SubMenu key="sub2" title={<span><Icon type="profile"  /><span>文章管理</span></span>}>
                            <Menu.Item key='2'><Link  to={{ pathname: '/articleList' }}>文章列表</Link></Menu.Item>
-                           <Menu.Item key='3'><Link  to={{ pathname: '/articleList',query:{community:1} }}>社区文章列表</Link></Menu.Item>
-                           <Menu.Item key='4'><Link  to={{ pathname: '/addArticle' }}>添加文章</Link></Menu.Item>
+                           <Menu.Item key='3'><Link  to={{ pathname: '/addArticle' }}>添加文章</Link></Menu.Item>
                        </SubMenu>
-                       <SubMenu key="sub3" title={<span><Icon type="profile"  /><span>模块管理</span></span>}>
+                       <SubMenu key="sub3" title={<span><Icon type="profile"  /><span>评论管理</span></span>}>
+                           <Menu.Item key='4'><Link  to={{ pathname: '/commentList' }}>评论列表</Link></Menu.Item>
+                       </SubMenu>
+                       <SubMenu key="sub4" title={<span><Icon type="profile"  /><span>模块管理</span></span>}>
                            <Menu.Item key='5'><Link  to={{ pathname: '/plateList' }}>模块列表</Link></Menu.Item>
                            <Menu.Item key='6'><Link  to={{ pathname: '/addplate' }}>添加模块</Link></Menu.Item>
                            <Menu.Item key='7'><Link  to={{ pathname: '/resAdd' }}>添加资源</Link></Menu.Item>
@@ -79,7 +81,7 @@ export class leftMenu extends Component {
                        {
                            plateAndResList.map((plate, m) => {
                                return (
-                                   <SubMenu key={m+4} title={<span><Icon type="profile"  /><span>{plate.detail}</span></span>}>
+                                   <SubMenu key={m+5} title={<span><Icon type="profile"  /><span>{plate.detail}</span></span>}>
                                        {
                                            plate.res.map((item, k) => {
                                                return (

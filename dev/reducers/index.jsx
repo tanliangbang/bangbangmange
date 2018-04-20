@@ -3,6 +3,7 @@ import { routerReducer } from 'react-router-redux'
 import res from './res.jsx'
 import plate from './plate.jsx'
 import article from './article.jsx'
+import comment from './comment.jsx'
 
 //todos
 
@@ -11,6 +12,7 @@ const rootReducer = combineReducers({
 	res,
     plate,
     article,
+    comment,
 	routing: routerReducer //整合路由
 })
 

@@ -9536,7 +9536,7 @@
                     }
 
                 } else if (match[2]) {
-                    //comment
+                    //comment.jsx
                     comment(currentParent, match[2])
                 }
             }catch(e){}
@@ -10128,7 +10128,7 @@
                     }
 
                 }
-//            if(node.type == 'comment'){
+//            if(node.type == 'comment.jsx'){
 //                node.parentNode.removeChild(node);
 //            }
             })

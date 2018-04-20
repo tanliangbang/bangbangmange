@@ -23,12 +23,11 @@ export class ArticleList extends React.Component {
             pageSize: 10,
             loading:false,
             defaultCurrent: current,
-            showSizeChanger: true,
             onShowSizeChange: () => {
                 _this.getDate();
             },
             onChange:(current) => {
-                _this.getDate({current:current})
+                _this.getDate({currPage:current})
             },
         }
         let community = this.props.router.query.community;
@@ -40,21 +39,8 @@ export class ArticleList extends React.Component {
             current: current
         }
     }
-
-    componentWillReceiveProps(nextProps){
-        let community = this.props.router.query.community;
-        let nextCommunity = nextProps.router.query.community;
-        if(community !== nextCommunity && nextProps.router.pathname==='/articleList'){
-            this.setState({
-                community:nextCommunity
-            })
-            this.getDate({nextCommunity:(nextCommunity?nextCommunity:0)})
-        }
-    }
-
     getDate(obj = {}){
         let _this = this;
-        let community = obj['nextCommunity']===undefined?this.props.router.query.community:obj.obj['nextCommunity'];
         let pageSize = this.state.pagination.pageSize
         let current = 1;
         if(obj['currPage']) {
@@ -62,43 +48,31 @@ export class ArticleList extends React.Component {
         }else {
             current = this.state.pagination.defaultCurrent
         }
+
         let param = {
             start:(current-1)*pageSize,
-            pageSize:pageSize,
-            community:community
+            pageSize:pageSize
         }
         let query = {}
+        let str = "?"
         if (obj['otherParam']) {
-            var otherQuery = {}
-            let str = "?"
-            for (let item in obj['otherParam']) {
-                if (obj['otherParam'][item]!=='-1') {
-                    str += (item +"="+ obj['otherParam'][item]+"&")
-                    otherQuery[item] = obj['otherParam'][item]
-                }
-            }
-            if(str!=="?") {
-                str = str.substring(0,str.length-1)
-            }else {
-                str = ""
-            }
-            if (current!==1) {
-                str = str +"&page="+current;
-            }
-            browserHistory.push("/articleList"+str);
-            query = otherQuery
+            query = obj['otherParam']
         }else {
             query = this.props.router.query
         }
-
-
-
-
-
-
         for (let item in query) {
-            param[item] = query[item]
+            if (query[item]!=='-1'&&item!=='page') {
+                str += (item +"="+ query[item]+"&")
+                param[item] = query[item]
+            }
         }
+        if (current!==1) {
+            str = str +"page="+current;
+        } else if (str!=="?") {
+            str = str.substring(0,str.length-1)
+        }
+        this.state.pagination.current = current
+        browserHistory.push("/articleList"+str);
         _this.setState({loading:true})
         new Promise(function(resolve,reject){
             _this.props.actions.getArticleListByType(param,resolve,reject);
@@ -120,13 +94,24 @@ export class ArticleList extends React.Component {
             typeList:typeList
         })
         this.getDate()
+
+        let query = this.props.router.query
+        let param = {
+            typeId:query.typeId?parseInt(query.typeId):"-1",
+            show:query.typeId?query.show:"-1",
+            recommend:query.recommend?query.recommend:"-1",
+            top:query.top?query.top:"-1",
+            good:query.good?query.good:"-1",
+            community:query.community?query.community:"0"
+        }
+        this.props.form.setFieldsValue(param)
     }
 
     handleSubmit(e) {
         e.preventDefault();
         let _this = this;
         this.props.form.validateFields((err, values) => {
-            _this.getDate({otherParam:values})
+            _this.getDate({otherParam:values,currPage:1})
         })
     }
 
@@ -244,15 +229,24 @@ export class ArticleList extends React.Component {
             plainOptions.push(<Option key={i+1} value={typeList[i].id}>{typeList[i].content.name}</Option>);
         }
         const { getFieldDecorator } = this.props.form;
+
         return (
             <div className="articleList">
                 <div className="search">
                     <Form layout="inline" onSubmit={this.handleSubmit.bind(this)}>
                         <FormItem  label='文章类型' >
-                            {getFieldDecorator('typeId', {
-                                initialValue:'-1'
+                            {getFieldDecorator('community', {
                             })(
-                                <Select  style={{ width: 150 }}  >
+                                <Select  style={{ width: 120 }}  >
+                                    <Option value="1">帖子</Option>
+                                    <Option value="0">文章</Option>
+                                </Select>
+                            )}
+                        </FormItem>
+                        <FormItem  label='文章类别' >
+                            {getFieldDecorator('typeId', {
+                            })(
+                                <Select  style={{ width: 120 }}  >
                                     <Option key="0" value="-1">全部</Option>
                                     {plainOptions}
                                 </Select>
@@ -261,9 +255,8 @@ export class ArticleList extends React.Component {
 
                         <FormItem  label='显示' >
                             {getFieldDecorator('show', {
-                                initialValue:'-1'
                             })(
-                                <Select  style={{ width: 150 }} >
+                                <Select  style={{ width: 120 }} >
                                     <Option value="-1">全部</Option>
                                     <Option value="1">是</Option>
                                     <Option value="0">否</Option>
@@ -273,9 +266,8 @@ export class ArticleList extends React.Component {
 
                         <FormItem  label='推荐' >
                             {getFieldDecorator('recommend', {
-                                initialValue:'-1'
                             })(
-                                <Select  style={{ width: 150 }} >
+                                <Select  style={{ width: 120 }} >
                                     <Option value="-1">全部</Option>
                                     <Option value="1">是</Option>
                                     <Option value="0">否</Option>
@@ -284,9 +276,8 @@ export class ArticleList extends React.Component {
                         </FormItem>
                         <FormItem  label='顶置' >
                             {getFieldDecorator('top', {
-                                initialValue:'-1'
                             })(
-                                <Select  style={{ width: 150 }} >
+                                <Select  style={{ width: 120 }} >
                                     <Option value="-1">全部</Option>
                                     <Option value="1">是</Option>
                                     <Option value="0">否</Option>
@@ -295,9 +286,8 @@ export class ArticleList extends React.Component {
                         </FormItem>
                         <FormItem  label='好文' >
                             {getFieldDecorator('good', {
-                                initialValue:'-1'
                             })(
-                                <Select  style={{ width: 150 }} >
+                                <Select  style={{ width: 120 }} >
                                     <Option value="-1">全部</Option>
                                     <Option value="1">是</Option>
                                     <Option value="0">否</Option>

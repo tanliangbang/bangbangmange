@@ -1,0 +1,14 @@
+@import "../../style/var.scss";
+
+.commentList{
+  padding:0px 20px;
+  table{
+    background-color:#fff;
+  }
+  .operaIcon{
+    a{
+      font-size:20px;
+      color:$main-color;
+    }
+  }
+}

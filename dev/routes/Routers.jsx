@@ -42,15 +42,22 @@ export const routes = {
             path: 'addArticle',
             getComponent(nextState, callback){
                 require.ensure([], (require) => {
-                    callback(null, require('../containers/article/AddArticle.jsx').default)
+                    callback(null, require('../containers/Article/AddArticle.jsx').default)
                 }, 'AddArticle')
             }
         },{
             path: 'articleList',
             getComponent(nextState, callback){
                 require.ensure([], (require) => {
-                    callback(null, require('../containers/article/ArticleList.jsx').default)
+                    callback(null, require('../containers/Article/ArticleList.jsx').default)
                 }, 'ArticleList')
+            }
+        },{
+            path: 'commentList',
+            getComponent(nextState, callback){
+                require.ensure([], (require) => {
+                    callback(null, require('../containers/Comment/CommentList.jsx').default)
+                }, 'CommentList')
             }
         },{
             path: 'addPlate',

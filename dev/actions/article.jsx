@@ -2,7 +2,6 @@ import { Tool, merged } from '../utils/Tool.jsx';
 import * as actionConstant from '../constants/actionConstant.jsx';
 import axios  from 'axios';
 const api = require( './../utils/api.jsx' );
-import * as resAction from './res.jsx';
 
 export const addOrEditorArticle = (param,resolve,reject) => {
     return dispatch => {

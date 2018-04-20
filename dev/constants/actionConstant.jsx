@@ -6,6 +6,8 @@ export const  GET_PLATE_LIST = 'GET_PLATE_LIST';
 export const  GET_PLATE_RES_LIST = 'GET_PLATE_RES_LIST';
 export const  GET_ARTICLE_LIST = 'GET_ARTICLE_LIST';
 export const  SET_PRE_URL = 'SET_PRE_URL';
+export const  SET_COMMENT_LIST = 'SET_COMMENT_LIST';
+
 
 
 

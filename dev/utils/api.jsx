@@ -23,11 +23,12 @@ module.exports = {
     getPlateDetailByIdUrl: API_BASE + '/api/plate/getPlateDetailById',
     getUpdatePlateUrl: API_BASE + '/api/plate/updatePlate',
     getPlateAndResListUrl: API_BASE + '/api/plate/getPlateListAndPlate',
-    getaddOrUpdateAticleUrl: API_BASE + '/api/article/addOrUpdateArticle',
-    getArticleListByTypeUrl: API_BASE + '/api/article/getArticleListByType',
-    getDelArticleUrl: API_BASE + '/api/article/delArticle',
-    getArticleByIdUrl: API_BASE + '/api/article/getArticleById',
-    getOperaArticleUrl: API_BASE + '/api/article/operaArticle',
-
+    getaddOrUpdateAticleUrl: API_BASE + '/api/Article/addOrUpdateArticle',
+    getArticleListByTypeUrl: API_BASE + '/api/Article/getArticleListByType',
+    getDelArticleUrl: API_BASE + '/api/Article/delArticle',
+    getArticleByIdUrl: API_BASE + '/api/Article/getArticleById',
+    getOperaArticleUrl: API_BASE + '/api/Article/operaArticle',
+    getCommentListUrl: API_BASE + '/api/comments/allCommentList',
+    delCommentUrl: API_BASE + '/api/comments/delComment'
 };
 
