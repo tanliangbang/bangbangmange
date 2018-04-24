@@ -9,6 +9,7 @@ import UploadImg from '../../Components/Common/UploadImg.jsx';
 import axios from "axios";
 const Option = Select.Option;
 const FormItem = Form.Item;
+const { TextArea } = Input;
 
 require('./../../assets/plugins/ueditor/ueditor.config.js');
 require('./../../assets/plugins/ueditor/ueditor.all.js');
@@ -48,6 +49,7 @@ export class AddArticle extends React.Component {
                 obj['title'] = res['title']
                 obj['breif'] = res['breif']
                 obj['wherefrom'] = res['wherefrom']
+                obj['seo_keys'] = res['seo_keys']
                 obj['label'] = res['label']
                 obj['is_show'] = res['is_show']==1?true : false
                 obj['typeId'] = res['typeId']
@@ -180,7 +182,7 @@ export class AddArticle extends React.Component {
                                     message: '请输入简介'
                                 }],
                             })(
-                                <Input placeholder="请输入简介" />
+                                <TextArea rows={4} placeholder="请输入简介"></TextArea>
                             )}
                         </FormItem>
                         <FormItem {...formItemLayout} label="来源">
@@ -193,7 +195,16 @@ export class AddArticle extends React.Component {
                                 <Input placeholder="请输入来源" />
                             )}
                         </FormItem>
-
+                        <FormItem {...formItemLayout} label="关键词">
+                            {getFieldDecorator('seo_keys', {
+                                rules: [{
+                                    required: false,
+                                    message: '关键词'
+                                }],
+                            })(
+                                <Input placeholder="请输入来源" />
+                            )}
+                        </FormItem>
                         <FormItem {...formItemLayout} label="配图" >
                             {getFieldDecorator('imgUrl', {
                             })(
