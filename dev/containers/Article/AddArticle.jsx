@@ -11,10 +11,6 @@ const Option = Select.Option;
 const FormItem = Form.Item;
 const { TextArea } = Input;
 
-require('./../../assets/plugins/ueditor/ueditor.config.js');
-require('./../../assets/plugins/ueditor/ueditor.all.js');
-require('./../../assets/plugins/ueditor/lang/zh-cn/zh-cn.js');
-
 export class AddArticle extends React.Component {
     constructor(props) {
         super(props);
@@ -39,6 +35,9 @@ export class AddArticle extends React.Component {
         this.setState({
             typeList:typeList
         })
+    }
+
+    componentDidMount(){
         let currId = this.state.currId
         let _this = this;
         if(currId){
@@ -53,31 +52,62 @@ export class AddArticle extends React.Component {
                 obj['label'] = res['label']
                 obj['is_show'] = res['is_show']==1?true : false
                 obj['typeId'] = res['typeId']
+                obj['content'] = res['content']
                 if(res['imgUrl']){
-                   if(_this.refs["art-imgUrl"]){
-                       _this.refs["art-imgUrl"].setImgUrl(res['imgUrl']);
-                   }
-                 }
+                    if(_this.refs["art-imgUrl"]){
+                        _this.refs["art-imgUrl"].setImgUrl(res['imgUrl']);
+                    }
+                }
                 obj['imgUrl'] = res['imgUrl']
-                UE.getEditor("content").ready(function(){
-                    UE.getEditor("content").setContent(res["content"],false);
-                })
                 _this.setState({
                     contentId: res['contentId'],
                     oldTypeId:res['typeId']
                 })
+                _this.initEditor(res['content'])
                 _this.props.form.setFieldsValue(obj)
             }).catch(function(reason){
             });
+        } else {
+            this.initEditor ('')
         }
     }
 
-    componentDidMount(){
-        UE.getEditor('content')
-        this.props.router.setRouteLeaveHook(this.props.route, this.routerWillLeave.bind(this));
-    }
-    routerWillLeave() {
-       UE.getEditor('content').destroy();
+    initEditor (content) {
+        let editor = editormd("content", {
+            width: "100%",
+            height: 740,
+            path: "./assets/plugins/editor.md-master/lib/",
+            // theme: "dark",
+            // editorTheme: "pastel-on-dark",
+            codeFold: true,
+            //syncScrolling : false,
+            saveHTMLToTextarea: true,    // 保存 HTML 到 Textarea
+            searchReplace: true,
+            //watch : false,                // 关闭实时预览
+            htmlDecode: "style,script,iframe|on*",            // 开启 HTML 标签解析，为了安全性，默认不开启
+            //toolbar  : false,             //关闭工具栏
+            //previewCodeHighlight : false, // 关闭预览 HTML 的代码块高亮，默认开启
+            emoji: true,
+            taskList: true,
+            tocm: true,         // Using [TOCM]
+            tex: true,                   // 开启科学公式TeX语言支持，默认关闭
+            flowChart: true,             // 开启流程图支持，默认关闭
+            sequenceDiagram: true,       // 开启时序/序列图支持，默认关闭,
+            //dialogLockScreen : false,   // 设置弹出层对话框不锁屏，全局通用，默认为true
+            //dialogShowMask : false,     // 设置弹出层对话框显示透明遮罩层，全局通用，默认为true
+            //dialogDraggable : false,    // 设置弹出层对话框不可拖动，全局通用，默认为true
+            //dialogMaskOpacity : 0.4,    // 设置透明遮罩层的透明度，全局通用，默认值为0.1
+            //dialogMaskBgColor : "#000", // 设置透明遮罩层的背景颜色，全局通用，默认为#fff
+            imageUpload: true,
+            imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+            imageUploadURL: "./api/upload/uploadImg",
+            onload: function () {
+                editor.setMarkdown(content)
+            },
+        })
+        this.setState({
+            editor:editor
+        })
     }
 
     handleSubmit(e) {
@@ -90,7 +120,7 @@ export class AddArticle extends React.Component {
                     commiting:true
                 })
                 values['is_show'] = values['is_show'] ? 1 : 0
-                values['content']=UE.getEditor('content').getContent()
+                values['content']=this.state.editor.getHTML()
                 _this.setState({
                     commiting:true
                 })
@@ -152,7 +182,7 @@ export class AddArticle extends React.Component {
         };
         const formTextareaLayout = {
             labelCol: { span: 4 },
-            wrapperCol: { span: 18 }
+            wrapperCol: { span: 24 }
         };
         const { getFieldDecorator } = this.props.form;
         const {commiting,currId,typeList} = this.state;
@@ -246,7 +276,7 @@ export class AddArticle extends React.Component {
                         <FormItem {...formTextareaLayout} label='文章内容'>
                             {getFieldDecorator('content', {
                             })(
-                                <div  type="text/plain" style={{width:"100%",height:"800px",position:"relative"}}></div>
+                                <div></div>
                             )}
                         </FormItem>
 
